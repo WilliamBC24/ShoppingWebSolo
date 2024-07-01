@@ -1,0 +1,20 @@
+.button{
+    width: 150px;
+    height: 49px;
+    border: none;
+    outline: none;
+    border-radius: 49px;
+    background-color: #838599;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 10px 0;
+    transition: 0.25s;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    &:focus, &:hover{
+        background-color: #5b8adc;
+    }
+}
