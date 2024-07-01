@@ -1,0 +1,217 @@
+create database stbcStore
+use stbcStore
+
+//User
+CREATE TABLE `User` (
+	`userID` INT NOT NULL AUTO_INCREMENT,
+	`username` VARCHAR(100) NOT NULL unique,
+	`password` VARCHAR(100),
+	`salt` VARCHAR(50),
+	`email` VARCHAR(150) NOT NULL unique,
+	`gender` varchar(20) NOT NULL,
+	`phoneNumber` Varchar(100) not null,
+	`avatarImg` varchar(200),
+	`firstName` VARCHAR(150) NOT NULL,
+	lastName varchar(150) not null,
+    verifyToken varchar(100),
+	verifiedStatus int not null,
+	accessLevel int not null,
+ `googleID` VARCHAR(100) ,      
+    `OAuthProvider` VARCHAR(50),      
+    `OAuthToken` VARCHAR(255),
+	PRIMARY KEY (`userID`),
+	foreign key (verifiedStatus) references VerifiedStatus(verifiedID),
+	foreign key (accessLevel) references AccessLevel(accessLevelID)
+);
+
+//Verified Status 
+create table VerifiedStatus(
+	verifiedID int not null primary key,
+    verifiedStatus varchar(30) not null
+);
+insert into VerifiedStatus(verifiedID,verifiedStatus)
+values(0,'Unverified'),(1,'Verified');
+
+//Session ID
+ create table SessionID(
+	userID int not null,
+    sessionID varchar(200) not null,
+    foreign key (userID) references User(userID),
+    primary key(userID,sessionID)
+ );
+
+//Access Level
+create table AccessLevel(
+	accessLevelID INT NOT NULL,
+    accessLevel VARCHAR(50) NOT NULL,
+	PRIMARY KEY (`accessLevelID`)
+);
+INSERT INTO AccessLevel (accessLevelID, accessLevel) VALUES
+(0, 'Guest'),
+(1, 'Customer'),
+(2, 'Staff'),
+(3, 'Admin');
+
+//UserPaymentInfo
+create table UserPaymentInfo(
+	paymentID int not null auto_increment,
+	userID int not null,
+    creditCardNumber int not null,
+    deliveryLocation varchar(200) not null,
+    phoneNumber int not null,
+    receiverName varchar(200) not null,
+	primary key (paymentID, userID),
+    foreign key (userID) references User(userID)
+);
+
+//Post
+create table post(
+	postID int not null auto_increment primary key,
+    userID int not null,
+    updatedDate Date not null,
+    title varchar(200) not null,
+    detail varchar(1000) not null,
+	category int not null,
+	postImg varchar(200),
+    foreign key (userID) references User(userID),
+	foreign key (category) references PostCategoryTemplate(categoryID)
+);
+
+//PostCategoryTemplate
+create table postCategorytemplate(
+	categoryID int not null primary key,
+    category varchar(100) not null
+);
+INSERT INTO PostCategoryTemplate (categoryID, category)
+VALUES 
+(0, 'Announcement'),
+(1, 'Promotional');	
+
+//Cart
+create table cart(
+    userID int not null,
+	productID int not null,
+	quantity int not null,
+	primary key (userID, productID),
+    foreign key (userID) references User(userID),
+	foreign key (productID) references Product(ProductID)
+);
+
+
+//Product
+create table Product(
+	productID int not null auto_increment primary key,
+    title varchar(200) not null,
+    price float not null,
+    sale int not null,
+    details varchar(500) not null,
+    quantityInStock int not null,
+	productImg varchar(200) not null
+);
+
+//ProductCategoryTemplate
+create table ProductCategoryTemplate(
+	categoryID int not null primary key,
+    category varchar(100) not null
+);
+
+INSERT INTO ProductCategoryTemplate (categoryID, category)
+VALUES 
+(0, 'Male'),
+(1, 'Female'),
+(2, 'SS'),
+(3, 'FW'),
+(4, 'Top'),
+(5, 'Bottom'),
+(6, 'Outerwear'),
+(7, 'Underwear');
+
+//ProductCategory
+CREATE TABLE ProductCategory (
+    categoryID int NOT NULL,
+    productID int NOT NULL,
+    PRIMARY KEY (productID, categoryID),
+    FOREIGN KEY (categoryID) REFERENCES ProductCategorytemplate(categoryID),
+    FOREIGN KEY (productID) REFERENCES Product(productID)
+);
+
+//Feedback
+create table Feedback(
+	feedbackID int not null auto_increment primary key,
+    userID int not null,
+    productID int not null,
+    feedbackDetail varchar(500) not null,
+    star int not null,
+	attachedImg varchar(200),
+	feedbackDate date not null,
+    foreign key (userID) references User(userID),
+    foreign key (productID) references Product(productID)
+);
+
+//Orders
+create table Orders(
+	orderID int not null auto_increment primary key,
+    userID int not null,
+    orderDate date not null,
+    receivedDate date,
+	totalAmount float not null,
+	status int not null,
+    foreign key (userID) references User(userID),
+	foreign key (status) references OrderStatusTemplate(orderStatusID)
+);
+
+//OrderDetails
+create table orderDetails(
+	orderID int not null,
+    productID int not null,
+    amount int not null,
+	price float not null,
+	primary key (orderID, productID),
+    foreign key (orderID) references Orders(orderID),
+    foreign key (productID) references product(productID)
+);
+
+//OrderStatusTemplate
+CREATE TABLE OrderStatusTemplate (
+    orderStatusID INT NOT NULL primary key,
+    orderStatus VARCHAR(50) NOT NULL
+);
+INSERT INTO OrderStatusTemplate (orderStatusID, orderStatus) VALUES
+(0, 'Preparing'),
+(1, 'Delivering'),
+(2, 'Delivered'),
+(3, 'Returned'),
+(4, 'Cancelled');
+
+//Payment
+create table Payment(
+	paymentID int not null auto_increment primary key,
+    userID int not null,
+    orderID int not null,
+    paymentAmount float not null,
+    paymentTime datetime not null,
+	status int not null,
+    foreign key (userID) references User(userID),
+    foreign key (orderID) references Orders(orderID),
+	foreign key (status) references PaymentStatusTemplate(paymentStatusID)
+);
+
+//PaymentStatusTemplate
+create table PaymentStatusTemplate(
+	paymentStatusID int not null primary key,
+    paymentStatus varchar(50) not null
+);
+INSERT INTO PaymentStatusTemplate (paymentStatusID, paymentStatus) VALUES
+(0, 'Unpaid'),
+(1, 'Paid'),
+(2, 'Cancelled');
+
+//Settings
+create table Settings(
+	settingsID int not null auto_increment primary key,
+    settingsType varchar(100) not null,
+    settingsValue varchar(100) not null,
+    settingsStatus int not null
+);
+
+
