@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b6832346-d0c1-4194-a1a9-741c6bca7152" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/avatar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/commons-logging-1.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/fluent-hc-4.5.14.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/google-api-client-1.32.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/google-http-client-1.32.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/google-oauth-client-1.30.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/google-oauth-client-servlet-1.32.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/gson-2.8.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/httpclient-4.5.9.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/httpcore-4.4.11.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/jackson-core-2.1.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/jackson-core-2.9.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/jdo2-api-2.3-eb.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/jsr305-3.0.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/protobuf-java-3.6.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/transaction-api-1.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/OAuth/xpp3-1.1.4c.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/jakarta.activation-api-2.1.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/jakarta.mail-2.0.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/Manager/Email.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/Manager/OAuth.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/Manager/OAuthConst.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/Manager/OAuthUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/Screen/OAuthLogin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/JSP/OAuthInfo/oauth.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/JSP/OAuthInfo/oauth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/JSP/OAuthInfo/oauth.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/databaseQuery.txt" beforeDir="false" afterPath="$PROJECT_DIR$/database/databaseQuery.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/build-impl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/build-impl.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/genfiles.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/genfiles.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/ObjectModel/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/ObjectModel/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/Screen/Forgot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Screen/Forgot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/Screen/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Screen/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/Screen/Register.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Forgot/InputCode/input.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Forgot/InputCode/input.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Forgot/InputCode/input.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Forgot/InputCode/input.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Forgot/forgot.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Forgot/forgot.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Login/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Login/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Login/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Login/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Login/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Login/login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Nav/nav.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Nav/nav.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Register/register.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Register/register.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Register/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Register/register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/Register/register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/JSP/Register/register.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/UserProfile/profile.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/UserProfile/profile.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/JSP/UserProfile/profile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.jsp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2gORLtgmTKIEs5ZFam7jQvFUyc7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/SonBui/Desktop/stbcStore"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-4caba194b151-23eed401" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b6832346-d0c1-4194-a1a9-741c6bca7152" name="Changes" comment="" />
+      <created>1715566586429</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1715566586429</updated>
+    </task>
+    <servers />
+  </component>
+</project>
