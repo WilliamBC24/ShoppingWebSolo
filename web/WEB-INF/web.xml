@@ -86,6 +86,10 @@
         <servlet-name>SettingsManagement</servlet-name>
         <servlet-class>Screen.SettingsManagement</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Statistics</servlet-name>
+        <servlet-class>Manager.Statistics</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ConnectionTest</servlet-name>
         <url-pattern>/ConnectionTest</url-pattern>
@@ -162,5 +166,8 @@
         <servlet-name>SettingsManagement</servlet-name>
         <url-pattern>/SettingsManagement</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>Statistics</servlet-name>
+        <url-pattern>/Statistics</url-pattern>
+    </servlet-mapping>
 </web-app>

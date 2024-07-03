@@ -54,9 +54,9 @@
                         </tbody>
                     </table>
                     <div class="pagination">
-                            <button><a href="http://localhost:8080/stbcStore/UserManagement?page-=1"><i class="fas fa-angle-left"></i></a></button>
+                            <button><a href="http://localhost:8080/stbcStore/OrderManagement?page-=1"><i class="fas fa-angle-left"></i></a></button>
                             <button>1</button>
-                            <button><a href="http://localhost:8080/stbcStore/UserManagement?page+=1"><i class="fas fa-angle-right"></i></a></button>
+                            <button><a href="http://localhost:8080/stbcStore/OrderManagement?page+=1"><i class="fas fa-angle-right"></i></a></button>
                         </div>
                 </div>
             </section>
