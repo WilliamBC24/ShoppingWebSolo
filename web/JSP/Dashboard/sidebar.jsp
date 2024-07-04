@@ -10,7 +10,7 @@
         <p>${loggedinuser.username}</p>
     </div>
     <ul>
-        <li><a href="${pageContext.request.contextPath}/ProfileManagement">Profile</a></li>
+        <li onclick="window.location.href = '${pageContext.request.contextPath}/ProfileManagement'"><a href=>Profile</a></li>
 
         <c:if test="${loggedinuser.accessLevel eq '2'||loggedinuser.accessLevel eq '3'}"> 
             <li onclick="window.location.href = '${pageContext.request.contextPath}/ProductManagement'">Product</li>

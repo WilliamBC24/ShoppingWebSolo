@@ -106,11 +106,13 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("userEditError", "Passwords should match");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 }
                 if (!RegexCheck.match(password, passwordRegex)) {
                     sesh.setAttribute("userEditError", "Password must be 8-100 characters long, contains at least a letter, a number and a special character");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 }
             }
             if (email != null && !email.isEmpty()) {
@@ -119,6 +121,7 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("userEditError", "Please use correct email format");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 }
             }
             if (phoneNumber != null && !phoneNumber.isEmpty()) {
@@ -127,6 +130,7 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("userEditError", "Please use correct phone format");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 }
             }
 
@@ -143,6 +147,7 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("userEditError", "Username already taken");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 } else {
                     if (username != null && !username.isEmpty()) {
                         if (!username.equals(user.getUsername())) {
@@ -152,6 +157,7 @@ public class UserManagement extends HttpServlet {
                             sesh.setAttribute("userEditError", "You can't use old username");
                             sesh.removeAttribute("userEditSuccess");
                             request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                            return;
                         }
                     }
                 }
@@ -167,6 +173,7 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("userEditError", "You can't use old email");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 }
             }
             if (password != null && !password.isEmpty()) {
@@ -182,6 +189,7 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("userEditError", "You can't use old password");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 }
             }
             if (gender != null && !gender.isEmpty()) {
@@ -196,6 +204,7 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("userEditError", "You can't use old phone number");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 }
             }
             if (firstName != null && !firstName.isEmpty()) {
@@ -206,6 +215,7 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("userEditError", "You can't use old first name");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 }
             }
             if (lastName != null && !lastName.isEmpty()) {
@@ -216,6 +226,7 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("userEditError", "You can't use old last name");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+                    return;
                 }
             }
             if (accessLevel != null && !accessLevel.isEmpty()) {
