@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  * @author sonbui
  */
 public class OrderManagement extends HttpServlet {
-
+    private static final int ITEMS_PER_PAGE = 5;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,14 +43,23 @@ public class OrderManagement extends HttpServlet {
         Connection con;
         PreparedStatement pstm;
         ResultSet rs;
+        String page=request.getParameter("page");
+        int currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
+        int offset = (currentPage - 1) * ITEMS_PER_PAGE;
+        request.setAttribute("currentPage", currentPage);
         try {
             con = DBContext.getConnection();
-            pstm = con.prepareStatement("select * from orders");
+            pstm = con.prepareStatement("SELECT * FROM orders LIMIT ? OFFSET ?");
+            pstm.setInt(1, ITEMS_PER_PAGE);
+            pstm.setInt(2, offset);
             rs = pstm.executeQuery();
             List<Order> orderList = Order.getOrder(rs);
             if(orderList.isEmpty()){
                 System.out.println("nothing herer");
             }
+            int totalOrders = getTotalOrders(con);
+            int totalPages = (int) Math.ceil((double) totalOrders / ITEMS_PER_PAGE);
+            request.setAttribute("totalPages", totalPages);
             request.setAttribute("orderList", orderList);
             request.getRequestDispatcher("JSP/Dashboard/order.jsp").forward(request, response);
         } catch (SQLException | ClassNotFoundException ex) {
@@ -58,6 +67,16 @@ public class OrderManagement extends HttpServlet {
         }
     }
 
+    private int getTotalOrders(Connection con) throws SQLException {
+        String countQuery = "SELECT COUNT(*) FROM orders";
+        try (PreparedStatement pstm = con.prepareStatement(countQuery);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

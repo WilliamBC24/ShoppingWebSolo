@@ -90,6 +90,10 @@
         <servlet-name>Statistics</servlet-name>
         <servlet-class>Manager.Statistics</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MyOrders</servlet-name>
+        <servlet-class>Screen.MyOrders</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ConnectionTest</servlet-name>
         <url-pattern>/ConnectionTest</url-pattern>
@@ -169,5 +173,9 @@
     <servlet-mapping>
         <servlet-name>Statistics</servlet-name>
         <url-pattern>/Statistics</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyOrders</servlet-name>
+        <url-pattern>/MyOrders</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -54,11 +54,28 @@
                         </tbody>
                     </table>
                     <div class="pagination">
-                            <button><a href="http://localhost:8080/stbcStore/OrderManagement?page-=1"><i class="fas fa-angle-left"></i></a></button>
-                            <button>1</button>
-                            <button><a href="http://localhost:8080/stbcStore/OrderManagement?page+=1"><i class="fas fa-angle-right"></i></a></button>
+                            <c:if test="${currentPage != 1}">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/OrderManagement?page=${currentPage-1}'">
+                                    <i class="fas fa-angle-left"></i>
+                                </button>
+                            </c:if>
+                            <c:if test="${currentPage == 1}">
+                                <button>
+                                    <i class="fas fa-angle-left"></i>
+                                </button>
+                            </c:if>
+                            <button>${currentPage}</button>
+                            <c:if test="${currentPage != totalPages}">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/OrderManagement?page=${currentPage+1}'">
+                                    <i class="fas fa-angle-right"></i>
+                                </button>
+                            </c:if>
+                            <c:if test="${currentPage == totalPages}">
+                                <button>
+                                    <i class="fas fa-angle-right"></i>
+                                </button>
+                            </c:if>
                         </div>
-                </div>
             </section>
         </div>
     </div>

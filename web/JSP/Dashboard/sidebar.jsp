@@ -11,7 +11,8 @@
     </div>
     <ul>
         <li onclick="window.location.href = '${pageContext.request.contextPath}/ProfileManagement'">Profile</li>
-
+        <li onclick="window.location.href = '${pageContext.request.contextPath}/MyOrders'">My Orders</li>
+        
         <c:if test="${loggedinuser.accessLevel eq '2'||loggedinuser.accessLevel eq '3'}"> 
             <li onclick="window.location.href = '${pageContext.request.contextPath}/ProductManagement'">Product</li>
             <li onclick="window.location.href = '${pageContext.request.contextPath}/OrderManagement'">Order</a></li>

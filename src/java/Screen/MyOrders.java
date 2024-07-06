@@ -5,9 +5,8 @@
 package Screen;
 
 import Manager.DBContext;
-import ObjectModel.Product;
+import ObjectModel.Order;
 import ObjectModel.User;
-import Security.SessionVerification;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,10 +14,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,8 +26,10 @@ import java.util.logging.Logger;
  *
  * @author sonbui
  */
-public class ProductManagement extends HttpServlet {
-    private static final int ITEMS_PER_PAGE = 5;
+public class MyOrders extends HttpServlet {
+
+    private static final int ITEMS_PER_PAGE = 10;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,34 +41,37 @@ public class ProductManagement extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SessionVerification.checkSession(request, response);
-        Connection con;
-        PreparedStatement pstm;
-        ResultSet rs;
-        String page=request.getParameter("page");
+        HttpSession sesh = request.getSession();
+        User user = (User) sesh.getAttribute("loggedinuser");
+        int userID = user.getUserID();
+        String page = request.getParameter("page");
         int currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
         int offset = (currentPage - 1) * ITEMS_PER_PAGE;
         request.setAttribute("currentPage", currentPage);
-        try {
-            con = DBContext.getConnection();
-            pstm = con.prepareStatement("SELECT * FROM product LIMIT ? OFFSET ?");
-            pstm.setInt(1, ITEMS_PER_PAGE);
-            pstm.setInt(2, offset);
-            rs = pstm.executeQuery();
-            List<Product> productList = Product.getProduct(rs);
-            int totalProducts = getTotalProducts(con);
-            int totalPages = (int) Math.ceil((double) totalProducts / ITEMS_PER_PAGE);
+        try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("select * from orders where userid=? limit ? offset ?")) {
+            pstm.setInt(1, userID);
+            pstm.setInt(2, ITEMS_PER_PAGE);
+            pstm.setInt(3, offset);
+            ResultSet rs = pstm.executeQuery();
+            List<Order> myOrderList = Order.getOrder(rs);
+            if (myOrderList.isEmpty()) {
+                System.out.println("nothing here");
+            }
+            int totalMyOrders = getAllMyOrders(con,userID);
+            int totalPages = (int) Math.ceil((double) totalMyOrders / ITEMS_PER_PAGE);
             request.setAttribute("totalPages", totalPages);
-            request.setAttribute("productList", productList);
-            request.getRequestDispatcher("JSP/Dashboard/product.jsp").forward(request, response);
+            request.setAttribute("myOrderList", myOrderList);
+            request.getRequestDispatcher("JSP/Dashboard/myorders.jsp").forward(request, response);
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private int getTotalProducts(Connection con) throws SQLException {
-        String countQuery = "SELECT COUNT(*) FROM product";
-        try (PreparedStatement pstm = con.prepareStatement(countQuery);
-             ResultSet rs = pstm.executeQuery()) {
+
+    private int getAllMyOrders(Connection con, int userID) throws SQLException {
+        String countQuery = "SELECT COUNT(*) FROM orders where userid=?";
+        try (PreparedStatement pstm = con.prepareStatement(countQuery);) {
+            pstm.setInt(1, userID);
+            ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -101,19 +105,7 @@ public class ProductManagement extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-        String product = request.getParameter("product");
-        if ("delete".equals(action)) {
-            try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("delete from product where productID=?");) {
-                ps.setString(1, product);
-                int a = ps.executeUpdate();
-                processRequest(request, response);
-            } catch (SQLException | ClassNotFoundException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if ("edit".equals(action)) {
-            processRequest(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserManagement extends HttpServlet {
-
+    private static final int ITEMS_PER_PAGE = 5;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SessionVerification.checkSession(request, response);
@@ -34,18 +34,39 @@ public class UserManagement extends HttpServlet {
         Connection con;
         PreparedStatement pstm;
         ResultSet rs;
+        String page=request.getParameter("page");
+        int currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
+        int offset = (currentPage - 1) * ITEMS_PER_PAGE;
+        request.setAttribute("currentPage", currentPage);
         try {
             con = DBContext.getConnection();
-            pstm = con.prepareStatement("select * from user");
+            pstm = con.prepareStatement("SELECT * FROM user LIMIT ? OFFSET ?");
+            pstm.setInt(1, ITEMS_PER_PAGE);
+            pstm.setInt(2, offset);
             rs = pstm.executeQuery();
             List<User> userList = User.getUser(rs);
+            if(userList.isEmpty()){
+                System.out.println("nothing herer");
+            }
+            int totalUsers = getTotalUsers(con);
+            int totalPages = (int) Math.ceil((double) totalUsers / ITEMS_PER_PAGE);
+            request.setAttribute("totalPages", totalPages);
             request.setAttribute("userList", userList);
             request.getRequestDispatcher("JSP/Dashboard/user.jsp").forward(request, response);
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    private int getTotalUsers(Connection con) throws SQLException {
+        String countQuery = "SELECT COUNT(*) FROM user";
+        try (PreparedStatement pstm = con.prepareStatement(countQuery);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -20,7 +20,7 @@
                             <a class="addButton">New Product</a>
                         </div>
                         <p>The title i guess</p>
-                       <c:if test="${not empty productError}">
+                        <c:if test="${not empty productError}">
                             <div class="form-alert">
 
                                 <p>Display when theres an alert</p>
@@ -36,7 +36,7 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            
+
                             <tbody>
                                 <c:forEach var="product" items="${productList}">
                                     <tr>
@@ -58,9 +58,27 @@
                             </tbody>
                         </table>
                         <div class="pagination">
-                            <button><a href="http://localhost:8080/stbcStore/ProductManagement?page-=1"><i class="fas fa-angle-left"></i></a></button>
-                            <button>1</button>
-                            <button><a href="http://localhost:8080/stbcStore/ProductManagement?page+=1"><i class="fas fa-angle-right"></i></a></button>
+                            <c:if test="${currentPage != 1}">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/ProductManagement?page=${currentPage-1}'">
+                                    <i class="fas fa-angle-left"></i>
+                                </button>
+                            </c:if>
+                            <c:if test="${currentPage == 1}">
+                                <button>
+                                    <i class="fas fa-angle-left"></i>
+                                </button>
+                            </c:if>
+                            <button>${currentPage}</button>
+                            <c:if test="${currentPage != totalPages}">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/ProductManagement?page=${currentPage+1}'">
+                                    <i class="fas fa-angle-right"></i>
+                                </button>
+                            </c:if>
+                            <c:if test="${currentPage == totalPages}">
+                                <button>
+                                    <i class="fas fa-angle-right"></i>
+                                </button>
+                            </c:if>
                         </div>
                     </div>
                 </section>
