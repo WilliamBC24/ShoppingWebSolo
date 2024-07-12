@@ -9,16 +9,16 @@ import java.util.List;
 public class Order {
 
     private int orderID;
-    private int userID;
+    private String username;
     private Date orderDate;
     private Date receivedDate;
     private float totalAmount;
     private int status;
 
     // Constructor
-    public Order(int orderID, int userID, Date orderDate, Date receivedDate, float totalAmount, int status) {
+    public Order(int orderID, String username, Date orderDate, Date receivedDate, float totalAmount, int status) {
         this.orderID = orderID;
-        this.userID = userID;
+        this.username = username;
         this.orderDate = orderDate;
         this.receivedDate = receivedDate;
         this.totalAmount = totalAmount;
@@ -34,12 +34,12 @@ public class Order {
     }
 
     // Getter and Setter for userID
-    public int getUserID() {
-        return userID;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUsername(String username){
+        this.username = username;
     }
 
     // Getter and Setter for orderDate
@@ -83,13 +83,13 @@ public class Order {
 
         while (rs.next()) {
             int orderID = rs.getInt("orderID");
-            int userID = rs.getInt("userID");
+            String username = rs.getString("username");
             Date orderDate = rs.getDate("orderDate");
             Date receivedDate = rs.getDate("receivedDate");
             float totalAmount = rs.getFloat("totalAmount");
             int status = rs.getInt("status");
 
-            Order order = new Order(orderID, userID, orderDate, receivedDate, totalAmount, status);
+            Order order = new Order(orderID, username, orderDate, receivedDate, totalAmount, status);
             orderList.add(order);
         }
 
