@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package Screen;
 
 import Manager.DBContext;
@@ -22,34 +19,22 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author sonbui
- */
+
 public class MyOrders extends HttpServlet {
 
     private static final int ITEMS_PER_PAGE = 10;
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesh = request.getSession();
         User user = (User) sesh.getAttribute("loggedinuser");
-        int userID = user.getUserID();
+        String username = user.getUsername();
         String page = request.getParameter("page");
         int currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
         int offset = (currentPage - 1) * ITEMS_PER_PAGE;
         request.setAttribute("currentPage", currentPage);
-        try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("select * from orders where userid=? limit ? offset ?")) {
-            pstm.setInt(1, userID);
+        try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("select * from orders where username=? limit ? offset ?")) {
+            pstm.setString(1, username);
             pstm.setInt(2, ITEMS_PER_PAGE);
             pstm.setInt(3, offset);
             ResultSet rs = pstm.executeQuery();
@@ -57,7 +42,7 @@ public class MyOrders extends HttpServlet {
             if (myOrderList.isEmpty()) {
                 System.out.println("nothing here");
             }
-            int totalMyOrders = getAllMyOrders(con,userID);
+            int totalMyOrders = getAllMyOrders(con,username);
             int totalPages = (int) Math.ceil((double) totalMyOrders / ITEMS_PER_PAGE);
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("myOrderList", myOrderList);
@@ -67,10 +52,10 @@ public class MyOrders extends HttpServlet {
         }
     }
 
-    private int getAllMyOrders(Connection con, int userID) throws SQLException {
-        String countQuery = "SELECT COUNT(*) FROM orders where userid=?";
+    private int getAllMyOrders(Connection con, String username) throws SQLException {
+        String countQuery = "SELECT COUNT(*) FROM orders where username=?";
         try (PreparedStatement pstm = con.prepareStatement(countQuery);) {
-            pstm.setInt(1, userID);
+            pstm.setString(1, username);
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
@@ -79,43 +64,24 @@ public class MyOrders extends HttpServlet {
         return 0;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+  
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

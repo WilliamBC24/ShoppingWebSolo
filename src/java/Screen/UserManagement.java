@@ -1,7 +1,6 @@
 package Screen;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,76 +18,48 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserManagement extends HttpServlet {
-    private static final int ITEMS_PER_PAGE = 5;
+
+    private static final int ITEMS_PER_PAGE = 10;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SessionVerification.checkSession(request, response);
-        HttpSession sesh=request.getSession();
+        HttpSession sesh = request.getSession();
         sesh.removeAttribute("userEditError");
         sesh.removeAttribute("userEditSuccess");
-        Connection con;
-        PreparedStatement pstm;
-        ResultSet rs;
-        String page=request.getParameter("page");
+        String page = request.getParameter("page");
         int currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
         int offset = (currentPage - 1) * ITEMS_PER_PAGE;
         request.setAttribute("currentPage", currentPage);
-        try {
-            con = DBContext.getConnection();
-            pstm = con.prepareStatement("SELECT * FROM user LIMIT ? OFFSET ?");
-            pstm.setInt(1, ITEMS_PER_PAGE);
-            pstm.setInt(2, offset);
-            rs = pstm.executeQuery();
-            List<User> userList = User.getUser(rs);
-            if(userList.isEmpty()){
-                System.out.println("nothing herer");
-            }
-            int totalUsers = getTotalUsers(con);
-            int totalPages = (int) Math.ceil((double) totalUsers / ITEMS_PER_PAGE);
-            request.setAttribute("totalPages", totalPages);
-            request.setAttribute("userList", userList);
-            request.getRequestDispatcher("JSP/Dashboard/user.jsp").forward(request, response);
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    private int getTotalUsers(Connection con) throws SQLException {
-        String countQuery = "SELECT COUNT(*) FROM user";
-        try (PreparedStatement pstm = con.prepareStatement(countQuery);
-             ResultSet rs = pstm.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        }
-        return 0;
-    }
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
         String action = request.getParameter("action");
         if ("delete".equals(action)) {
             int userID = Integer.parseInt(request.getParameter("username"));
             try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("delete from user where userID=?");) {
                 ps.setInt(1, userID);
                 int a = ps.executeUpdate();
-                processRequest(request, response);
+                try (PreparedStatement pstm = con.prepareStatement("SELECT * FROM user LIMIT ? OFFSET ?");) {
+                    pstm.setInt(1, ITEMS_PER_PAGE);
+                    pstm.setInt(2, offset);
+                    ResultSet rs = pstm.executeQuery();
+                    List<User> userList = User.getUser(rs);
+                    if (userList.isEmpty()) {
+                        System.out.println("nothing herer");
+                    }
+                    int totalUsers = getTotalUsers(con);
+                    int totalPages = (int) Math.ceil((double) totalUsers / ITEMS_PER_PAGE);
+                    request.setAttribute("totalPages", totalPages);
+                    request.setAttribute("userList", userList);
+                    request.getRequestDispatcher("JSP/Dashboard/user.jsp").forward(request, response);
+                }
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if ("edit".equals(action)) {
             int userID = Integer.parseInt(request.getParameter("username"));
-            HttpSession sesh = request.getSession();
             try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("select * from user where userID=?")) {
                 ps.setInt(1, userID);
                 ResultSet rs = ps.executeQuery();
@@ -98,12 +69,11 @@ public class UserManagement extends HttpServlet {
                     sesh.setAttribute("editchosenuser", userE);
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                 }
-                processRequest(request, response);
+                request.getRequestDispatcher("JSP/Dashboard/user.jsp").forward(request, response);
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if ("change".equals(action)) {
-            HttpSession sesh = request.getSession();
             sesh.removeAttribute("userEditError");
             sesh.removeAttribute("userEditSuccess");
             String username = request.getParameter("username");
@@ -117,9 +87,9 @@ public class UserManagement extends HttpServlet {
             String accessLevel = request.getParameter("accessLevel");
             User user = (User) sesh.getAttribute("editchosenuser");
             int userID = user.getUserID();
-            Connection conC = null;
-            PreparedStatement psC = null;
-            ResultSet rsC = null;
+            Connection conC;
+            PreparedStatement psC;
+            ResultSet rsC;
 
             if (password != null && !password.isEmpty() || rePassword != null && !rePassword.isEmpty()) {
                 String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,100}$";
@@ -200,8 +170,8 @@ public class UserManagement extends HttpServlet {
             if (password != null && !password.isEmpty()) {
                 String salt = user.getSalt();
                 if (!PassHash.hashPass(password, salt).equals(user.getPassword())) {
-                    String newSalt=Salt.generate();
-                    String newPass=PassHash.hashPass(password,newSalt);
+                    String newSalt = Salt.generate();
+                    String newPass = PassHash.hashPass(password, newSalt);
                     fields.add("salt=?");
                     values.add(newSalt);
                     fields.add("password = ?");
@@ -269,20 +239,107 @@ public class UserManagement extends HttpServlet {
                 }
             }
             try (Connection conz = DBContext.getConnection(); PreparedStatement npsz = conz.prepareStatement("select * from user where userid=?");) {
-            npsz.setInt(1, userID);
-            ResultSet rsz = npsz.executeQuery();
-            if (rsz.next()) {
-                User user2 = new User();
-                user2.summonUser(rsz);
-                sesh.setAttribute("editchosenuser", user2);
+                npsz.setInt(1, userID);
+                ResultSet rsz = npsz.executeQuery();
+                if (rsz.next()) {
+                    User user2 = new User();
+                    user2.summonUser(rsz);
+                    sesh.setAttribute("editchosenuser", user2);
+                }
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
             sesh.setAttribute("userEditSuccess", "Update Success");
             sesh.removeAttribute("userEditError");
             request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
+        } else if ("search".equals(action)) {
+            page = request.getParameter("page");
+            currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
+            offset = (currentPage - 1) * ITEMS_PER_PAGE;
+            request.setAttribute("currentPage", currentPage);
+
+            String search = request.getParameter("search");
+            String sort = (request.getParameter("sort") == null || request.getParameter("sort").isEmpty()) ? "username" : request.getParameter("sort");
+            String order = (request.getParameter("order")==null||request.getParameter("order").isEmpty())?"ASC":request.getParameter("order");
+            if (search == null || search.isEmpty()) {
+                Connection con;
+                PreparedStatement pstm;
+                ResultSet rs;
+                String sql = "SELECT * FROM user ORDER BY " + sort + " " + order + " LIMIT ? OFFSET ?";
+                try {
+                    con = DBContext.getConnection();
+                    pstm = con.prepareStatement(sql);
+                    pstm.setInt(1, ITEMS_PER_PAGE);
+                    pstm.setInt(2, offset);
+                    rs = pstm.executeQuery();
+                    List<User> userList = User.getUser(rs);
+                    int totalUsers = getTotalUsers(con);
+                    int totalPages = (int) Math.ceil((double) totalUsers / ITEMS_PER_PAGE);
+                    request.setAttribute("totalPages", totalPages);
+                    request.setAttribute("userList", userList);
+                    request.getRequestDispatcher("JSP/Dashboard/user.jsp").forward(request, response);
+                } catch (SQLException | ClassNotFoundException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return;
+            }
+
+            String sql = "SELECT * FROM user WHERE username LIKE ?";
+            sql += "ORDER BY " + sort + " " + order;
+            ResultSet rs;
+            try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+                ps.setString(1, '%' + search + '%');
+                rs = ps.executeQuery();
+                List<User> userList = User.getUser(rs);
+                int totalUsers = getTotalUsers(con);
+                int totalPages = (int) Math.ceil((double) totalUsers / ITEMS_PER_PAGE);
+                request.setAttribute("totalPages", totalPages);
+                request.setAttribute("userList", userList);
+                request.getRequestDispatcher("JSP/Dashboard/user.jsp").forward(request, response);
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM user LIMIT ? OFFSET ?");) {
+                pstm.setInt(1, ITEMS_PER_PAGE);
+                pstm.setInt(2, offset);
+                ResultSet rs = pstm.executeQuery();
+                List<User> userList = User.getUser(rs);
+                if (userList.isEmpty()) {
+                    System.out.println("nothing herer");
+                }
+                int totalUsers = getTotalUsers(con);
+                int totalPages = (int) Math.ceil((double) totalUsers / ITEMS_PER_PAGE);
+                request.setAttribute("totalPages", totalPages);
+                request.setAttribute("userList", userList);
+                request.getRequestDispatcher("JSP/Dashboard/user.jsp").forward(request, response);
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+    }
+
+    private int getTotalUsers(Connection con) throws SQLException {
+        String countQuery = "SELECT COUNT(*) FROM user";
+        try (PreparedStatement pstm = con.prepareStatement(countQuery); ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     @Override
