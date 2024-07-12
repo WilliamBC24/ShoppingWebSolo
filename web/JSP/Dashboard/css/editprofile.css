@@ -31,39 +31,7 @@ body {
     width: 100%;
 }
 
-.sidebar {
-    width: 250px;
-    background-color: #2c2c2c;
-    color: #fff;
-    padding: 20px;
-    .user-profile {
-        text-align: center;
-        margin-bottom: 10px;
-        font-size: large;
-        img {
-            width: 100px;
-            height: 100px;
-            margin: 5px 10px 10px 10px;
-            border-radius: 50%;
-        }
-    }
-    ul {
-        list-style: none;
-        padding: 0;
-        li {
-            padding: 20px 0;
-            transition: transform 0.2s ease;
-            &:hover{
-                transform: translateX(10px);
-            }
-            a {
-                color: #fff;
-                text-decoration: none;
-            }
-        }
-    }
 
-}
 
 .main-content {
     flex-grow: 1;

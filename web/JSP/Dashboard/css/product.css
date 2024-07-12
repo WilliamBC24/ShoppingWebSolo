@@ -15,63 +15,13 @@ body {
     width: 100%;
 }
 
-.sidebar {
-    width: 250px;
-    background-color: #2c2c2c;
-    color: #fff;
-    padding: 20px;
-    .user-profile {
-        text-align: center;
-        margin-bottom: 10px;
-        font-size: large;
-        img {
-            width: 100px;
-            height: 100px;
-            margin: 5px 10px 10px 10px;
-            border-radius: 50%;
-        }
-    }
-    ul {
-        list-style: none;
-        padding: 0;
-        li {
-            padding: 20px 0;
-            transition: transform 0.2s ease;
-            &:hover{
-                transform: translateX(10px);
-            }
-            a {
-                color: #fff;
-                text-decoration: none;
-            }
-        }
-    }
-    
-}
+
 
 .main-content {
     flex-grow: 1;
     padding: 20px;
 }
 
-.overview {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
-    font-size: 18px;
-    img{
-        width: 50px;
-    }
-}
-
-.overview-item {
-    text-align: center;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 22%;
-}
 
 .form-section {
     background-color: #fff;
@@ -90,14 +40,23 @@ body {
 
 table {
     width: 100%;
-    border-collapse: collapse;
     margin: 20px 0;
+    border-collapse:separate;
+    border:solid black 1px;
+    border-radius:10px;
+    border-spacing:0;
+    overflow:hidden;
     th,td{
         padding: 10px;
-        border: 1px solid #ccc;
+        border-left:solid black 1px;
+        border-top:solid black 1px;
     }
     th{
         background-color: #f5f5f5;
+        border-top: none;
+    }
+    td:first-child, th:first-child {
+        border-left: none;
     }
 }
 .pagination {
@@ -123,7 +82,7 @@ table {
     text-decoration: none;
     color: #000;
     background-color: #f9f9f9;
-    border: 1px solid black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     cursor: pointer;
     transition: 0.3s ease;
@@ -135,3 +94,4 @@ table {
         transform: translateY(1px);
     }
 }
+
