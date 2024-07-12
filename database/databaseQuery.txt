@@ -41,14 +41,6 @@ CREATE TABLE `User` (
     FOREIGN KEY (`accessLevel`) REFERENCES AccessLevel(`accessLevelID`)
 );
 
--- Create the SessionID table
-CREATE TABLE SessionID (
-    userID INT NOT NULL,
-    sessionID VARCHAR(200) NOT NULL,
-    PRIMARY KEY (userID, sessionID),
-    FOREIGN KEY (userID) REFERENCES `User`(userID)
-);
-
 -- Create the UserPaymentInfo table
 CREATE TABLE UserPaymentInfo (
     paymentID INT NOT NULL AUTO_INCREMENT,
@@ -90,7 +82,8 @@ CREATE TABLE Product (
     sale INT NOT NULL,
     details VARCHAR(500) NOT NULL,
     quantityInStock INT NOT NULL,
-    productImg VARCHAR(200) NOT NULL
+    productImg VARCHAR(200) NOT NULL,
+    fulltext(title)
 );
 
 -- Create the ProductCategoryTemplate table and insert initial data
@@ -144,12 +137,12 @@ INSERT INTO OrderStatusTemplate (orderStatusID, orderStatus) VALUES
 -- Create the Orders table
 CREATE TABLE Orders (
     orderID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    userID INT NOT NULL,
+    username varchar(100) NOT NULL,
     orderDate DATE NOT NULL,
     receivedDate DATE,
     totalAmount FLOAT NOT NULL,
     status INT NOT NULL,
-    FOREIGN KEY (userID) REFERENCES `User`(userID),
+    FOREIGN KEY (userID) REFERENCES `User`(username),
     FOREIGN KEY (status) REFERENCES OrderStatusTemplate(orderStatusID)
 );
 
