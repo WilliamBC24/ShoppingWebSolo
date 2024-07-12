@@ -19,7 +19,10 @@
                             <h2>Product</h2>
                             <a class="addButton">New Product</a>
                         </div>
-                        <p>The title i guess</p>
+
+                        <jsp:include page="searchdropdown/product.jsp"/>
+
+
                         <c:if test="${not empty productError}">
                             <div class="form-alert">
 
@@ -41,9 +44,9 @@
                                 <c:forEach var="product" items="${productList}">
                                     <tr>
                                         <td>${product.title}</td>
-                                        <td>${product.price}</td>
+                                        <td>$${product.price}</td>
                                         <td>${product.quantityInStock}</td>
-                                        <td>
+                                        <td style="display:flex; justify-content: space-evenly;">
                                             <form action="ProductManagement" method="post">
                                                 <input type="hidden" name="product" value="${product.productID}">
                                                 <button type="submit" name="action" value="edit">Edit</button>
@@ -52,6 +55,10 @@
                                                 <input type="hidden" name="product" value="${product.productID}">
                                                 <button type="submit" name="action" value="delete">Delete</button>
                                             </form>
+                                            <form action="ProductManagement" method="post">
+                                                <input type="hidden" name="product" value="${product.productID}">
+                                                <button type="submit" name="action" value="feedback">View Feedback</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </c:forEach>                                
@@ -59,7 +66,7 @@
                         </table>
                         <div class="pagination">
                             <c:if test="${currentPage != 1}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/ProductManagement?page=${currentPage-1}'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/ProductManagement?page=${currentPage-1}&sort=${param.sort}&order=${param.order}&action=search'">
                                     <i class="fas fa-angle-left"></i>
                                 </button>
                             </c:if>
@@ -70,7 +77,7 @@
                             </c:if>
                             <button>${currentPage}</button>
                             <c:if test="${currentPage != totalPages}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/ProductManagement?page=${currentPage+1}'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/ProductManagement?page=${currentPage+1}&sort=${param.sort}&order=${param.order}&action=search'">
                                     <i class="fas fa-angle-right"></i>
                                 </button>
                             </c:if>

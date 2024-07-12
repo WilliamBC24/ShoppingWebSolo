@@ -16,7 +16,7 @@
                 <section class="content">
                     <div class="form-section">
                         <h2>My Orders</h2>
-                        <p>The title i guess</p>
+                        <jsp:include page="searchdropdown/myorders.jsp"/>
                         <c:if test="${not empty myOrderError}">
                             <div class="form-alert">
 
@@ -72,7 +72,7 @@
                         </table>
                         <div class="pagination">
                             <c:if test="${currentPage != 1}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/MyOrders?page=${currentPage-1}'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/MyOrders?page=${currentPage-1}&sort=${param.sort}&order=${param.order}&action=search'">
                                     <i class="fas fa-angle-left"></i>
                                 </button>
                             </c:if>
@@ -83,7 +83,7 @@
                             </c:if>
                             <button>${currentPage}</button>
                             <c:if test="${currentPage != totalPages}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/MyOrders?page=${currentPage+1}'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/MyOrders?page=${currentPage+1}&sort=${param.sort}&order=${param.order}&action=search'">
                                     <i class="fas fa-angle-right"></i>
                                 </button>
                             </c:if>

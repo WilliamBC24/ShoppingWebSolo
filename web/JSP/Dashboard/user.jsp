@@ -19,7 +19,7 @@
                     <jsp:include page="overview.jsp" />
                     <div class="form-section">
                         <h2>User</h2>
-                        <p>The title i guess</p>
+                        <jsp:include page="searchdropdown/user.jsp"/>
                         <c:if test="${not empty userError}">
                             <div class="form-alert">
 
@@ -59,7 +59,7 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td>
+                                        <td  style="display:flex; justify-content: space-around;">
                                             <form action="UserManagement" method="post">
                                                 <input type="hidden" name="username" value="${user.userID}">
                                                 <button type="submit" name="action" value="edit">Edit</button>
@@ -75,7 +75,7 @@
                         </table>
                         <div class="pagination">
                             <c:if test="${currentPage != 1}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/UserManagement?page=${currentPage-1}'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/UserManagement?page=${currentPage-1}&sort=${param.sort}&order=${param.order}&action=search'">
                                     <i class="fas fa-angle-left"></i>
                                 </button>
                             </c:if>
@@ -86,7 +86,7 @@
                             </c:if>
                             <button>${currentPage}</button>
                             <c:if test="${currentPage != totalPages}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/UserManagement?page=${currentPage+1}'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/UserManagement?page=${currentPage+1}&sort=${param.sort}&order=${param.order}&action=search'">
                                     <i class="fas fa-angle-right"></i>
                                 </button>
                             </c:if>

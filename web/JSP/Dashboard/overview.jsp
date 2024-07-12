@@ -35,6 +35,7 @@
         });
     });
 </script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/JSP/Dashboard/css/overview.css">
 <div class="overview">
     <div class="overview-item">
         <img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/get.svg" alt="">

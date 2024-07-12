@@ -19,7 +19,7 @@
                             <h2>Post</h2>
                             <a class="addButton">New Post</a>
                         </div>
-                        <p>The title i guess</p>
+                        <jsp:include page="searchdropdown/post.jsp"/>
                         <c:if test="${not empty postError}">
                             <div class="form-alert">
 
@@ -42,7 +42,7 @@
                                         <td>${post.postID}</td>
                                         <td>${post.title}</td>
                                         <td>${post.updatedDate}</td>
-                                        <td>
+                                        <td  style="display:flex; justify-content: space-around;">
                                             <form action="PostManagement" method="post">
                                                 <input type="hidden" name="post" value="${post.postID}">
                                                 <button type="submit" name="action" value="edit">Edit</button>
@@ -58,7 +58,7 @@
                         </table>
                         <div class="pagination">
                             <c:if test="${currentPage != 1}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/PostManagement?page=${currentPage-1}'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/PostManagement?page=${currentPage-1}&sort=${param.sort}&order=${param.order}&action=search'">
                                     <i class="fas fa-angle-left"></i>
                                 </button>
                             </c:if>
@@ -69,7 +69,7 @@
                             </c:if>
                             <button>${currentPage}</button>
                             <c:if test="${currentPage != totalPages}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/PostManagement?page=${currentPage+1}'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/PostManagement?page=${currentPage+1}&sort=${param.sort}&order=${param.order}&action=search'">
                                     <i class="fas fa-angle-right"></i>
                                 </button>
                             </c:if>

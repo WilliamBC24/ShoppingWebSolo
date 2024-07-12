@@ -74,12 +74,12 @@
                                 </div>
 
                             </div>
-                            <div class="item">
+                            <div class="item" style="margin-bottom:0px">
                                 <button id="button" type="submit" name="action" value="change" class="button">Save changes</button>
                             </div>
                         </form>
-                        <div class="item">
-                            <button class="button"><a style="text-decoration: none;color:black" href="${pageContext.request.contextPath}/UserManagement">Back</a></button>
+                        <div class="item" >
+                            <button class="button" onclick="window.location.href='${pageContext.request.contextPath}/UserManagement'" style="text-decoration: none; color: black;">Back</button>
                         </div>
                         <c:if test="${not empty userEditError}">
                             <div class="form-alert">
