@@ -1,4 +1,3 @@
-
 package Manager;
 
 import Screen.Login;
@@ -19,13 +18,12 @@ import java.util.logging.Logger;
 
 public class Statistics extends HttpServlet {
 
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
         try (Connection con = DBContext.getConnection()) {
-            double totalSales = fetchTotalSalesFromDB(con);
-            double totalExpenses = fetchTotalExpensesFromDB(con);
+            String totalSales = fetchTotalSalesFromDB(con);
+            String totalExpenses = fetchTotalExpensesFromDB(con);
             int totalVisitors = fetchTotalVisitorsFromDB(con);
             int totalOrders = fetchTotalOrdersFromDB(con);
 
@@ -41,29 +39,35 @@ public class Statistics extends HttpServlet {
         }
     }
 
-    private double fetchTotalSalesFromDB(Connection con) {
-        String sql = "select sum(totalAmount) from orders";
-        try (PreparedStatement ps = con.prepareStatement(sql);ResultSet rs = ps.executeQuery()) {
-            if(rs.next()) {
-                return rs.getDouble(1); 
+    private String fetchTotalSalesFromDB(Connection con) {
+        String sql = "SELECT FORMAT(SUM((priceOut * numbersSold) - (priceIn * numbersSold)), 2) AS totalProfit FROM Product;";
+        try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getString(1);
             }
         } catch (SQLException e) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, e);
         }
-        return 0;
+        return "";
     }
 
-    private double fetchTotalExpensesFromDB(Connection con) {
-        // Database access logic here
-        // Return the total sales value
-        return 1000.0; // Dummy value for example
+    private String fetchTotalExpensesFromDB(Connection con) {
+        String sql = "SELECT FORMAT(SUM((priceIn * quantityInStock)), 2) AS totalProfit FROM Product;";
+        try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return "";
     }
 
     private int fetchTotalVisitorsFromDB(Connection con) {
         String sql = "select count(userid) from user";
-        try (PreparedStatement ps = con.prepareStatement(sql);ResultSet rs = ps.executeQuery()) {
+        try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
-                return rs.getInt(1); 
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, e);
@@ -73,9 +77,9 @@ public class Statistics extends HttpServlet {
 
     private int fetchTotalOrdersFromDB(Connection con) {
         String sql = "select count(orderid) from orders";
-        try (PreparedStatement ps = con.prepareStatement(sql);ResultSet rs = ps.executeQuery()) {
+        try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
-                return rs.getInt(1); 
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, e);
