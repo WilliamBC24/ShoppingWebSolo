@@ -45,7 +45,7 @@
     <div class="overview-item">
         <img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/out.svg" alt="">
         <h2>Total Expenses</h2>
-        <p><span id="totalExpenses">Loading...</span></p>
+        <p>$<span id="totalExpenses">Loading...</span></p>
     </div>
     <div class="overview-item">
         <img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/visit.svg" alt="">
