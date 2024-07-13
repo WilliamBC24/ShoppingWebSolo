@@ -83,8 +83,7 @@ CREATE TABLE Product (
     numbersSold INT NOT NULL DEFAULT 0,
     details VARCHAR(500) NOT NULL,
     quantityInStock INT NOT NULL,
-    productImg VARCHAR(200) NOT NULL,
-    fulltext(title)
+    productImg VARCHAR(200) NOT NULL
 );
 
 -- Create the ProductCategoryTemplate table and insert initial data
@@ -96,6 +95,24 @@ INSERT INTO ProductCategoryTemplate (categoryID, category)
 VALUES (0, 'Male'), (1, 'Female'), (2, 'SS'), (3, 'FW'), (4, 'Top'), (5, 'Bottom'), (6, 'Outerwear'), (7, 'Underwear');
 
 -- Create the ProductCategory table
+CREATE TABLE ProductGender (
+    categoryID INT NOT NULL,
+    productID INT NOT NULL,
+    PRIMARY KEY (productID, categoryID),
+    FOREIGN KEY (categoryID) REFERENCES ProductCategoryTemplate(categoryID),
+    FOREIGN KEY (productID) REFERENCES Product(productID)
+);
+
+-- Create the ProductSeason table
+CREATE TABLE ProductSeason (
+    categoryID INT NOT NULL,
+    productID INT NOT NULL,
+    PRIMARY KEY (productID, categoryID),
+    FOREIGN KEY (categoryID) REFERENCES ProductCategoryTemplate(categoryID),
+    FOREIGN KEY (productID) REFERENCES Product(productID)
+);
+
+-- Create the ProductCategory table
 CREATE TABLE ProductCategory (
     categoryID INT NOT NULL,
     productID INT NOT NULL,
@@ -103,6 +120,7 @@ CREATE TABLE ProductCategory (
     FOREIGN KEY (categoryID) REFERENCES ProductCategoryTemplate(categoryID),
     FOREIGN KEY (productID) REFERENCES Product(productID)
 );
+
 
 -- Create the Cart table
 CREATE TABLE Cart (
