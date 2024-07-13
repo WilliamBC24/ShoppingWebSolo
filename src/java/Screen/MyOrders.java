@@ -4,6 +4,7 @@ package Screen;
 import Manager.DBContext;
 import ObjectModel.Order;
 import ObjectModel.User;
+import Security.SessionVerification;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -26,6 +27,7 @@ public class MyOrders extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        SessionVerification.checkSession(request,response);
         HttpSession sesh = request.getSession();
         User user = (User) sesh.getAttribute("loggedinuser");
         String username = user.getUsername();

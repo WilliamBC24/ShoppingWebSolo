@@ -25,7 +25,7 @@ public class SettingsManagement extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SessionVerification.checkSession(request, response);
+        SessionVerification.checkAdmin(request, response);
         Connection con;
         PreparedStatement pstm;
         ResultSet rs;

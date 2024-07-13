@@ -1,5 +1,6 @@
 package Screen;
 
+import Security.SessionVerification;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 public class LogOut extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        SessionVerification.checkSession(request, response);
         HttpSession sesh=request.getSession();
         sesh.removeAttribute("loggedinuser");
         request.getRequestDispatcher("index.jsp").forward(request,response);

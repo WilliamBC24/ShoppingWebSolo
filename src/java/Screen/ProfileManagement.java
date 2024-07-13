@@ -31,9 +31,21 @@ public class ProfileManagement extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SessionVerification.checkSession(request, response);
-        HttpSession sesh=request.getSession();
+        HttpSession sesh = request.getSession();
         sesh.removeAttribute("editError");
         sesh.removeAttribute("editSuccess");
+        User user = (User) sesh.getAttribute("loggedinuser");
+        try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("select * from user where userid=?")) {
+            ps.setInt(1,user.getUserID());
+            ResultSet rs=ps.executeQuery();
+            if(rs.next()){
+                User user2=new User();
+                user2.summonUser(rs);
+                sesh.setAttribute("loggedinuser",user2);
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
         request.getRequestDispatcher("JSP/Dashboard/profile.jsp").forward(request, response);
     }
 
@@ -70,13 +82,13 @@ public class ProfileManagement extends HttpServlet {
                 String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,100}$";
                 if (!password.equals(rePassword)) {
                     sesh.setAttribute("editError", "Passwords should match");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 }
                 if (!RegexCheck.match(password, passwordRegex)) {
                     sesh.setAttribute("editError", "Password must be 8-100 characters long, contains at least a letter, a number and a special character");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 }
@@ -85,7 +97,7 @@ public class ProfileManagement extends HttpServlet {
                 String emailRegex = "^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$";
                 if (!RegexCheck.match(email, emailRegex)) {
                     sesh.setAttribute("editError", "Please use correct email format");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 }
@@ -94,7 +106,7 @@ public class ProfileManagement extends HttpServlet {
                 String phoneRegex = "^\\d{7,12}$";
                 if (!RegexCheck.match(phone, phoneRegex)) {
                     sesh.setAttribute("editError", "Please use correct phone format");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 }
@@ -110,7 +122,7 @@ public class ProfileManagement extends HttpServlet {
                 rsC = psC.executeQuery();
                 if (rsC.next()) {
                     sesh.setAttribute("editError", "Username already taken");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 } else {
@@ -120,7 +132,7 @@ public class ProfileManagement extends HttpServlet {
                             values.add(username);
                         } else {
                             sesh.setAttribute("editError", "You can't use old username");
-        sesh.removeAttribute("editSuccess");
+                            sesh.removeAttribute("editSuccess");
                             request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                             return;
                         }
@@ -139,7 +151,7 @@ public class ProfileManagement extends HttpServlet {
                 rsC = psC.executeQuery();
                 if (rsC.next()) {
                     sesh.setAttribute("editError", "Email already taken");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 } else {
@@ -149,7 +161,7 @@ public class ProfileManagement extends HttpServlet {
                             values.add(email);
                         } else {
                             sesh.setAttribute("editError", "You can't use old email");
-        sesh.removeAttribute("editSuccess");
+                            sesh.removeAttribute("editSuccess");
                             request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                             return;
                         }
@@ -163,15 +175,15 @@ public class ProfileManagement extends HttpServlet {
             if (password != null && !password.isEmpty()) {
                 String salt = user.getSalt();
                 if (!PassHash.hashPass(password, salt).equals(user.getPassword())) {
-                    String newSalt=Salt.generate();
-                    String newPass=PassHash.hashPass(password,newSalt);
+                    String newSalt = Salt.generate();
+                    String newPass = PassHash.hashPass(password, newSalt);
                     fields.add("salt=?");
                     values.add(newSalt);
                     fields.add("password = ?");
                     values.add(newPass);
                 } else {
                     sesh.setAttribute("editError", "You can't use old password");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 }
@@ -186,7 +198,7 @@ public class ProfileManagement extends HttpServlet {
                     values.add(phone);
                 } else {
                     sesh.setAttribute("editError", "You can't use old phone number");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 }
@@ -197,7 +209,7 @@ public class ProfileManagement extends HttpServlet {
                     values.add(first);
                 } else {
                     sesh.setAttribute("editError", "You can't use old first name");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 }
@@ -208,7 +220,7 @@ public class ProfileManagement extends HttpServlet {
                     values.add(last);
                 } else {
                     sesh.setAttribute("editError", "You can't use old last name");
-        sesh.removeAttribute("editSuccess");
+                    sesh.removeAttribute("editSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
                     return;
                 }

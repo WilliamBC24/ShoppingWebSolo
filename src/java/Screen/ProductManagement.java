@@ -25,7 +25,7 @@ public class ProductManagement extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SessionVerification.checkSession(request, response);
+        SessionVerification.checkStaff(request, response);
         String page = request.getParameter("page");
         int currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
         int offset = (currentPage - 1) * ITEMS_PER_PAGE;

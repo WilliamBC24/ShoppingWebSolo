@@ -2,6 +2,7 @@ package Screen;
 
 import Manager.Email;
 import Security.ResetCode;
+import Security.SessionVerification;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ public class ResendCode extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        SessionVerification.alreadyLoggedIn(request, response);
         HttpSession sesh = request.getSession();
         String email = (String) sesh.getAttribute("resetmail");
         ResetCode codeGen = new ResetCode();

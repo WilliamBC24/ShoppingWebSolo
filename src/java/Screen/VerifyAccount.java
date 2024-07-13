@@ -2,6 +2,7 @@ package Screen;
 
 import Manager.DBContext;
 import ObjectModel.User;
+import Security.SessionVerification;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

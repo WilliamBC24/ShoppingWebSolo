@@ -27,7 +27,7 @@ public class UserManagement extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SessionVerification.checkSession(request, response);
+        SessionVerification.checkAdmin(request, response);
         HttpSession sesh = request.getSession();
         sesh.removeAttribute("userEditError");
         sesh.removeAttribute("userEditSuccess");
