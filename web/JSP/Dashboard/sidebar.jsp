@@ -3,11 +3,6 @@
 <nav class="sidebar">
     <div class="user-profile">
         <img src="${loggedinuser.avatarImg}" class="pic">
-        <script>
-            document.getElementByClass('pic').onerror = function () {
-                this.src = 'http://localhost:8080/stbcStore/img/placeholder.png';
-            };
-        </script>
         <p>${loggedinuser.username}</p>
     </div>
     <ul>
