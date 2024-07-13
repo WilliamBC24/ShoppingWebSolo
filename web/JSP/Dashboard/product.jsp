@@ -17,7 +17,7 @@
                     <div class="form-section">
                         <div style="display: flex;justify-content: space-between;">
                             <h2>Product</h2>
-                            <a class="addButton">New Product</a>
+                            <a class="addButton" href="${pageContext.request.contextPath}/JSP/Dashboard/addproduct.jsp">New Product</a>
                         </div>
 
                         <jsp:include page="searchdropdown/product.jsp"/>
@@ -44,19 +44,19 @@
                                 <c:forEach var="product" items="${productList}">
                                     <tr>
                                         <td>${product.title}</td>
-                                        <td>$${product.price}</td>
+                                        <td>$${product.priceOut}</td>
                                         <td>${product.quantityInStock}</td>
                                         <td style="display:flex; justify-content: space-evenly;">
                                             <form action="ProductManagement" method="post">
-                                                <input type="hidden" name="product" value="${product.productID}">
+                                                <input type="hidden" name="productID" value="${product.productID}">
                                                 <button type="submit" name="action" value="edit">Edit</button>
                                             </form>
                                             <form action="ProductManagement" method="post">
-                                                <input type="hidden" name="product" value="${product.productID}">
+                                                <input type="hidden" name="productID" value="${product.productID}">
                                                 <button type="submit" name="action" value="delete">Delete</button>
                                             </form>
                                             <form action="ProductManagement" method="post">
-                                                <input type="hidden" name="product" value="${product.productID}">
+                                                <input type="hidden" name="productID" value="${product.productID}">
                                                 <button type="submit" name="action" value="feedback">View Feedback</button>
                                             </form>
                                         </td>
