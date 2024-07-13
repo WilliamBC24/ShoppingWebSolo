@@ -78,8 +78,9 @@ CREATE TABLE Post (
 CREATE TABLE Product (
     productID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
-    price FLOAT NOT NULL,
-    sale INT NOT NULL,
+    priceIn FLOAT NOT NULL,
+    priceOut FLOAT NOT NULL,
+    numbersSold INT NOT NULL DEFAULT 0,
     details VARCHAR(500) NOT NULL,
     quantityInStock INT NOT NULL,
     productImg VARCHAR(200) NOT NULL,
