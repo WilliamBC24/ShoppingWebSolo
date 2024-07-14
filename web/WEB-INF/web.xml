@@ -64,10 +64,20 @@
     <servlet>
         <servlet-name>ProductManagement</servlet-name>
         <servlet-class>Screen.ProductManagement</servlet-class>
+        <multipart-config>
+            <max-file-size>20848820</max-file-size>
+            <max-request-size>418018841</max-request-size>
+            <file-size-threshold>1048576</file-size-threshold>
+        </multipart-config>
     </servlet>
     <servlet>
         <servlet-name>PostManagement</servlet-name>
         <servlet-class>Screen.PostManagement</servlet-class>
+        <multipart-config>
+            <max-file-size>20848820</max-file-size>
+            <max-request-size>418018841</max-request-size>
+            <file-size-threshold>1048576</file-size-threshold>
+        </multipart-config>
     </servlet>
     <servlet>
         <servlet-name>OrderManagement</servlet-name>
@@ -93,6 +103,15 @@
     <servlet>
         <servlet-name>MyOrders</servlet-name>
         <servlet-class>Screen.MyOrders</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductImg</servlet-name>
+        <servlet-class>Screen.ProductImg</servlet-class>
+        <multipart-config>
+            <max-file-size>20848820</max-file-size>
+            <max-request-size>418018841</max-request-size>
+            <file-size-threshold>1048576</file-size-threshold>
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>ConnectionTest</servlet-name>
@@ -177,5 +196,9 @@
     <servlet-mapping>
         <servlet-name>MyOrders</servlet-name>
         <url-pattern>/MyOrders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductImg</servlet-name>
+        <url-pattern>/ProductImg</url-pattern>
     </servlet-mapping>
 </web-app>
