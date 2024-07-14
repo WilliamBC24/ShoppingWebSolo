@@ -7,6 +7,8 @@
         <title>Dashboard</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/JSP/Dashboard/css/addproduct.css">
         <script src="https://kit.fontawesome.com/64d58efce2.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     </head>
     <body>
         <div class="container">
@@ -15,19 +17,44 @@
                 <section class="content">
                     <div class="containing">
                         <h2>New Product</h2>
-                        <form>
+                        <c:if test="${not empty addError}">
+                            <div class="form-alert">
+                                <p>${addError}</p>
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty addSuccess}">
+                            <div class="form-success">
+                                <p>${addSuccess}</p>
+                            </div>
+                        </c:if>
+                        <form action="${pageContext.request.contextPath}/ProductManagement" method="post" enctype="multipart/form-data" >
                             <label for="product-name">Product name</label>
-                            <input type="text" id="product-name" name="title">
+                            <input type="text" id="product-name" name="title" placeholder="Title" maxlength="200" required>
                             <label for="image">Image</label>
-                            <input type="file" id="image" name="image">
+                            <input type="file" accept=".png, .jpg, .jpeg" id="image" name="image" onchange="readURL(this)" required>
+                            <img id="blah" src="http://placehold.it/180" alt="your image" style="max-width:180px;margin-top: 10px"/>
+                            <script>
+                                function readURL(input) {
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
+
+                                        reader.onload = function (e) {
+                                            $('#blah')
+                                                    .attr('src', e.target.result);
+                                        };
+
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                            </script>
                             <label for="description">Description</label>
-                            <textarea id="description" name="details"></textarea>
+                            <textarea id="description" name="details" placeholder="Details(less than 500 characters)" maxlength="500" required></textarea>
                             <label for="quantity">Quantity</label>
-                            <input type="text" id="description" name="quantityInStock">
-                            <label for="quantity">Purchase Price</label>
-                            <input type="text" id="description" name="priceIn">
+                            <input type="text" id="description" name="quantityInStock" placeholder="Quantity in stock" required>
+                            <label for="quantity" >Purchase Price</label>
+                            <input type="text" id="description" name="priceIn" placeholder="Purchase price" required>
                             <label for="quantity">Selling Price</label>
-                            <input type="text" id="description" name="priceOut">
+                            <input type="text" id="description" name="priceOut" placeholder="Selling price" required>
                             <label for="gender">Gender</label>
                             <select id="gender" name="gender">
                                 <option value="0">Male</option>
@@ -45,39 +72,7 @@
                                 <option value="6">Outerwear</option>
                                 <option value="7">Underwear</option>
                             </select>
-                            
-<!--                            <label for="variation">Variation</label>
-                            <div id="variation-container">
-                                <div class="variation-field">
-                                    <input type="text" id="variation" name="variation">
-                                    <input type="file" id="variation-image" name="variation-image">
-                                    <div class="buttons">
-                                        <button type="button" id="add-variation" onclick="addVariationField()">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <script>
-                                function addVariationField() {
-                                    const container = document.getElementById('variation-container');
-                                    const newField = document.createElement('div');
-                                    newField.className = 'variation-field';
-                                    newField.innerHTML = `
-                                        <input type="text" name="variation">
-                                        <input type="file" name="variation-image">
-                                        <div class="buttons">
-                                            <button type="button" onclick="addVariationField()">+</button>
-                                            <button type="button" id="add-variation" onclick="removeVariationField(this)">-</button>
-                                        </div>
-                                    `;
-                                    container.appendChild(newField);
-                                }
-
-                                function removeVariationField(button) {
-                                    const field = button.closest('.variation-field');
-                                    field.remove();
-                                }
-                            </script>-->
-                            <button type="submit">Add Product</button>
+                            <button type="submit" name="action" value="add">Add Product</button>
                         </form>
                     </div>
                 </section>

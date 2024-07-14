@@ -34,16 +34,16 @@
                             <div class="card">
                                 <div class="item">
                                     <label class="label" for="username">Username:</label>
-                                    <input type="text" id="username" name="username" class="input-field" placeholder="${editchosenuser.username}">
+                                    <input type="text" maxlength="100" id="username" name="username" class="input-field" placeholder="${editchosenuser.username}">
                                 </div>                                <div class="item">
                                     <label class="label" for="email">Email:</label>
-                                    <input type="email" id="email" name="email" class="input-field" placeholder="${editchosenuser.email}">
+                                    <input type="email" maxlength="150" id="email" name="email" class="input-field" placeholder="${editchosenuser.email}">
                                 </div>
                                 <div class="item">
                                     <label class="label" for="password">Password:</label>
                                     <div style="display: flex; width: 100%; justify-content: space-between;">
-                                        <input style="width:48%" id="password" type="password" name="password" class="input-field" placeholder="New password" style="flex-grow: 0.48; padding-left: 5px;">
-                                        <input style="width:48%" id="rePassword" type="password" name="rePassword" placeholder="Re-enter password" class="input-field"style="flex-grow: 0.48;">
+                                        <input style="width:48%" maxlength="100" id="password" type="password" name="password" class="input-field" placeholder="New password" style="flex-grow: 0.48; padding-left: 5px;">
+                                        <input style="width:48%" maxlength="100" id="rePassword" type="password" name="rePassword" placeholder="Re-enter password" class="input-field"style="flex-grow: 0.48;">
                                     </div>
                                 </div>
                                 <div class="item">

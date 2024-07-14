@@ -40,17 +40,17 @@
                             <div class="card">
                                 <div class="item">
                                     <label class="label" for="username">Username:</label>
-                                    <input type="text" id="username" name="username" class="input-field" placeholder="${loggedinuser.username}">
+                                    <input type="text" id="username" name="username" class="input-field" placeholder="${loggedinuser.username}" maxlength="100">
                                 </div>
                                 <div class="item">
                                     <label class="label" for="email">Email:</label>
-                                    <input type="email" id="email" name="email" class="input-field" placeholder="${loggedinuser.email}">
+                                    <input type="email" id="email" name="email" class="input-field" placeholder="${loggedinuser.email}" maxlength="150">
                                 </div>
                                 <div class="item">
                                     <label class="label" for="password">Password:</label>
                                     <div style="display: flex; width: 100%; justify-content: space-between;">
-                                        <input style="width:48%" id="password" type="password" name="password" class="input-field" placeholder="New password" style="flex-grow: 0.48; padding-left: 5px;">
-                                        <input style="width:48%" id="rePassword" type="password" name="rePassword" placeholder="Re-enter password" class="input-field"style="flex-grow: 0.48;">
+                                        <input style="width:48%" maxlength="100" id="password" type="password" name="password" class="input-field" placeholder="New password" style="flex-grow: 0.48; padding-left: 5px;">
+                                        <input style="width:48%" maxlength="100" id="rePassword" type="password" name="rePassword" placeholder="Re-enter password" class="input-field"style="flex-grow: 0.48;">
                                     </div>
                                 </div>
                                 <div class="item">
@@ -67,8 +67,8 @@
                                 <div class="item">
                                     <label class="label" for="firstName">Full Name:</label>
                                     <div style="display: flex; width: 100%; justify-content: space-between;">
-                                        <input style="width:48%" type="text" id="firstName" name="firstName" class="input-field" placeholder="${loggedinuser.firstName}" style="flex-grow: 0.48; padding-left: 5px;">
-                                        <input style="width:48%" type="text" id="lastName" name="lastName" class="input-field" placeholder="${loggedinuser.lastName}" style="flex-grow: 0.48;">
+                                        <input style="width:48%" maxlength="150" type="text" id="firstName" name="firstName" class="input-field" placeholder="${loggedinuser.firstName}" style="flex-grow: 0.48; padding-left: 5px;">
+                                        <input style="width:48%" maxlength="150" type="text" id="lastName" name="lastName" class="input-field" placeholder="${loggedinuser.lastName}" style="flex-grow: 0.48;">
                                     </div>
                                 </div>
 
