@@ -11,9 +11,9 @@
             <div class="sort-container">
                 <label for="sort">Sort by:</label>
                 <select id="sort" name="sort" ">
-                    <option value="title" ${param.sort == 'title' ? 'selected' : '' } default>Name</option>
-                    <option value="quantityInStock" ${param.sort == 'quantityInStock' ? 'selected' : ''}>Quantity</option>
-                    <option value="price" ${param.sort == 'price' ? 'selected' : ''}>Price</option>
+                    <option value="username" ${param.sort == 'username' ? 'selected' : '' } default>User</option>
+                    <option value="star" ${param.sort == 'star' ? 'selected' : ''}>Star</option>
+                    <option value="feedbackDate" ${param.sort == 'feedbackDate' ? 'selected' : ''}>Feedback Date</option>
                 </select>
 
                 <select id="order" name="order" ">

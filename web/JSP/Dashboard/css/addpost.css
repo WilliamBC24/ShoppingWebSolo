@@ -18,6 +18,8 @@ body {
 
 
 .main-content {
+    display: flex;
+    justify-content: center;
     flex-grow: 1;
     padding: 20px;
 }
@@ -49,6 +51,11 @@ label {
     font-size: 14px;
     margin-top: 10px;
     margin-bottom: 5px;
+}
+
+.content{
+    margin-top: 100px;
+    width: 80%;
 }
 
 input[type="text"],

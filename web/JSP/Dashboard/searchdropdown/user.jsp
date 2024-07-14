@@ -4,7 +4,7 @@
 <div class="search-and-sort">
     <div style="display:flex;justify-content: space-between">
         <div class="search-container">
-                <input type="text" name="search" id="search" placeholder="Search...">
+                <input type="text" name="searchUser" id="search" placeholder="Search...">
                 <button type="submit" id="submit"><i class="fas fa-search"></i> Search</button>
                 <input type="hidden" name="action" value="search">
             </div>
