@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 public class PostManagement extends HttpServlet {
 
-    private static final int ITEMS_PER_PAGE = 10;
+    private static final int ITEMS_PER_PAGE = 8;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -1,19 +1,24 @@
 package ObjectModel;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Feedback {
+
     private int feedbackID;
-    private int userID;
-    private int productID;
+    private String username;
+    private String productName;
     private String feedbackDetail;
     private int star;
     private String attachedImg;
     private Date feedbackDate;
 
-    public Feedback(int userID, int productID, String feedbackDetail, int star, String attachedImg, Date feedbackDate) {
-        this.userID = userID;
-        this.productID = productID;
+    public Feedback(String username, String productName, String feedbackDetail, int star, String attachedImg, Date feedbackDate) {
+        this.username = username;
+        this.productName = productName;
         this.feedbackDetail = feedbackDetail;
         this.star = star;
         this.attachedImg = attachedImg;
@@ -28,20 +33,20 @@ public class Feedback {
         this.feedbackID = feedbackID;
     }
 
-    public int getUserID() {
-        return userID;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public int getProductID() {
-        return productID;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getFeedbackDetail() {
@@ -74,5 +79,23 @@ public class Feedback {
 
     public void setFeedbackDate(Date feedbackDate) {
         this.feedbackDate = feedbackDate;
+    }
+
+    public static List<Feedback> getFeedback(ResultSet rs) throws SQLException {
+        List<Feedback> feedbackList = new ArrayList<>();
+
+        while (rs.next()) {
+            String username = rs.getString("username");
+            String productName = rs.getString("productName");
+            String feedbackDetail = rs.getString("feedbackDetail");
+            int star = rs.getInt("star");
+            String attachedImg = rs.getString("attachedImg");
+            Date feedbackDate = rs.getDate("feedbackDate");
+
+            Feedback feedback = new Feedback(username, productName, feedbackDetail, star, attachedImg, feedbackDate);
+            feedbackList.add(feedback);
+        }
+
+        return feedbackList;
     }
 }

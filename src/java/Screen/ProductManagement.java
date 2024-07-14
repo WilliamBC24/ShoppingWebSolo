@@ -1,6 +1,7 @@
 package Screen;
 
 import Manager.DBContext;
+import ObjectModel.Feedback;
 import ObjectModel.Product;
 import ObjectModel.User;
 import Security.ImgNameGenerator;
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
 
 public class ProductManagement extends HttpServlet {
 
-    private static final int ITEMS_PER_PAGE = 10;
+    private static final int ITEMS_PER_PAGE = 6;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -39,8 +40,8 @@ public class ProductManagement extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("delete".equals(action)) {
+            String product = request.getParameter("productID");
             try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("update product set isActive=0 where productID=?");) {
-                String product = request.getParameter("productID");
                 ps.setString(1, product);
                 int a = ps.executeUpdate();
                 try (PreparedStatement pstm = con.prepareStatement("SELECT * FROM product where isActive <> 0 order by title asc LIMIT ? OFFSET ? ");) {
@@ -369,12 +370,27 @@ public class ProductManagement extends HttpServlet {
             }
             request.setAttribute("addSuccess", "Add Success");
             request.getRequestDispatcher("JSP/Dashboard/addproduct.jsp").forward(request, response);
-        }else if("feedback".equals(action)){
-            request.getRequestDispatcher("JSP/Dashboard/productfeedback.jsp").forward(request, response);
-        } 
-        else {
+        } else if ("feedback".equals(action)) {
+            String productName = request.getParameter("productName");
+            request.setAttribute("productName",productName);
+            int offsetFeedback = (currentPage - 1) * ITEMS_PER_PAGE;
+            String sql = "select * from feedback where productName=? ORDER BY username ASC LIMIT ? OFFSET ?";
+            try(Connection con=DBContext.getConnection();PreparedStatement ps=con.prepareStatement(sql)){
+                ps.setString(1,productName);
+                ps.setInt(2,ITEMS_PER_PAGE);
+                ps.setInt(3,offsetFeedback);
+                ResultSet rs=ps.executeQuery();
+                List<Feedback> feedbackList=Feedback.getFeedback(rs);
+                int totalFeedback = getTotalFeedback(con,productName);
+                int totalPages = (int) Math.ceil((double) totalFeedback / ITEMS_PER_PAGE);
+                request.setAttribute("totalPages", totalPages);
+                request.setAttribute("feedbackList", feedbackList);
+                request.getRequestDispatcher("JSP/Dashboard/productfeedback.jsp").forward(request, response);
+            }catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
             try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM product WHERE isActive <> 0 ORDER BY title ASC LIMIT ? OFFSET ?");) {
-
                 pstm.setInt(1, ITEMS_PER_PAGE);
                 pstm.setInt(2, offset);
                 ResultSet rs = pstm.executeQuery();
@@ -404,6 +420,17 @@ public class ProductManagement extends HttpServlet {
     private int getTotalProducts(Connection con) throws SQLException {
         String countQuery = "SELECT COUNT(*) FROM product where isActive <> 0";
         try (PreparedStatement pstm = con.prepareStatement(countQuery); ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+    private int getTotalFeedback(Connection con,String productName) throws SQLException {
+        String countQuery = "SELECT COUNT(*) FROM feedback where productName=?";
+        try (PreparedStatement pstm = con.prepareStatement(countQuery); ) {
+            pstm.setString(1,productName);
+            ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
             }

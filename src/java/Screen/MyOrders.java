@@ -3,6 +3,7 @@ package Screen;
 
 import Manager.DBContext;
 import ObjectModel.Order;
+import ObjectModel.OrderDetails;
 import ObjectModel.User;
 import Security.SessionVerification;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +37,47 @@ public class MyOrders extends HttpServlet {
         int currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
         int offset = (currentPage - 1) * ITEMS_PER_PAGE;
         request.setAttribute("currentPage", currentPage);
-        try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("select * from orders where username=? limit ? offset ?")) {
+        String action=request.getParameter("action");
+        if("view".equals(action)){
+            page = request.getParameter("page");
+            currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
+            offset = (currentPage - 1) * ITEMS_PER_PAGE;
+            request.setAttribute("currentPage", currentPage);
+
+            String usernamez = request.getParameter("usernamez");
+            request.setAttribute("usernamez", usernamez);
+            String totalAmount = request.getParameter("totalAmount");
+            request.setAttribute("totalAmount", totalAmount);
+            String orderID = request.getParameter("orderID");
+            try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("SELECT * FROM orderdetails where orderID=? LIMIT ? OFFSET ?")) {
+                ps.setString(1, orderID);
+                ps.setInt(2, ITEMS_PER_PAGE);
+                ps.setInt(3, offset);
+                ResultSet rs = ps.executeQuery();
+                List<OrderDetails> orderDetails = OrderDetails.getOrderDetails(rs);
+                List<String> images = new ArrayList<>();
+                PreparedStatement psi = con.prepareStatement("SELECT p.productImg FROM orderdetails od JOIN product p ON od.productName = p.title where orderID=? LIMIT ? OFFSET ?");
+                psi.setString(1, orderID);
+                psi.setInt(2, ITEMS_PER_PAGE);
+                psi.setInt(3, offset);
+                ResultSet rsi = psi.executeQuery();
+                while (rsi.next()) {
+                    String productImg = rsi.getString("productImg");
+                    images.add(productImg);
+                    System.out.println("Product Image Path: " + productImg);
+                }
+                
+                int totalOrders = getTotalOrdersView(con,orderID);
+                int totalPages = (int) Math.ceil((double) totalOrders / ITEMS_PER_PAGE);
+                request.setAttribute("totalPages", totalPages);
+                request.setAttribute("orderDetails", orderDetails);
+                request.setAttribute("images", images);
+                request.getRequestDispatcher("JSP/Dashboard/myorderdetails.jsp").forward(request, response);
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("select * from orders where username=? limit ? offset ?")) {
             pstm.setString(1, username);
             pstm.setInt(2, ITEMS_PER_PAGE);
             pstm.setInt(3, offset);
@@ -52,8 +94,20 @@ public class MyOrders extends HttpServlet {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+        }
+        
     }
-
+private int getTotalOrdersView(Connection con,String orderID) throws SQLException {
+        String countQuery = "SELECT count(*) FROM orderdetails where orderID=?";
+        try (PreparedStatement pstm = con.prepareStatement(countQuery); ) {
+            pstm.setString(1,orderID);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
     private int getAllMyOrders(Connection con, String username) throws SQLException {
         String countQuery = "SELECT COUNT(*) FROM orders where username=?";
         try (PreparedStatement pstm = con.prepareStatement(countQuery);) {
