@@ -77,7 +77,7 @@ CREATE TABLE Post (
 -- Create the Product table
 CREATE TABLE Product (
     productID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(200) NOT NULL,
+    title VARCHAR(200) NOT NULL unique,
     priceIn FLOAT NOT NULL,
     priceOut FLOAT NOT NULL,
     numbersSold INT NOT NULL DEFAULT 0,
@@ -86,7 +86,8 @@ CREATE TABLE Product (
     productImg VARCHAR(200) NOT NULL,
     gender INT NOT NULL,
     season INT NOT NULL,
-    category INT NOT NULL
+    category INT NOT NULL,
+    isActive int not null default 1,
 );
 
 -- Create the ProductCategoryTemplate table and insert initial data
@@ -112,14 +113,15 @@ CREATE TABLE Cart (
 -- Create the Feedback table
 CREATE TABLE Feedback (
     feedbackID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    userID INT NOT NULL,
-    productID INT NOT NULL,
+    username varchar(100) NOT NULL,
+    productName varchar(200) NOT NULL,
     feedbackDetail VARCHAR(500) NOT NULL,
     star INT NOT NULL,
     attachedImg VARCHAR(200),
     feedbackDate DATE NOT NULL,
-    FOREIGN KEY (userID) REFERENCES `User`(userID),
-    FOREIGN KEY (productID) REFERENCES Product(productID)
+    FOREIGN KEY (username) REFERENCES `User`(username),
+    FOREIGN KEY (productName) REFERENCES Product(productName),
+    UNIQUE (username, productName)
 );
 
 -- Create the OrderStatusTemplate table and insert initial data
@@ -145,12 +147,12 @@ CREATE TABLE Orders (
 -- Create the OrderDetails table
 CREATE TABLE OrderDetails (
     orderID INT NOT NULL,
-    productID INT NOT NULL,
+    productName varchar(200) NOT NULL,
     amount INT NOT NULL,
     price FLOAT NOT NULL,
-    PRIMARY KEY (orderID, productID),
+    PRIMARY KEY (orderID, productName),
     FOREIGN KEY (orderID) REFERENCES Orders(orderID),
-    FOREIGN KEY (productID) REFERENCES Product(productID)
+    FOREIGN KEY (productName) REFERENCES Product(productName)
 );
 
 -- Create the PaymentStatusTemplate table and insert initial data
