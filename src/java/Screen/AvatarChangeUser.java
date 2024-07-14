@@ -35,14 +35,12 @@ public class AvatarChangeUser extends HttpServlet {
         Part filePart = request.getPart("file");
         String fileName = getFileName(filePart);
         if (!fileName.toLowerCase().endsWith(".png") && !fileName.toLowerCase().endsWith(".jpg") && !fileName.toLowerCase().endsWith(".jpeg")) {
-            sesh.setAttribute("userEditError", "We only accept .png,.jpg or .jpeg");
-            sesh.removeAttribute("userEditSuccess");
+            request.setAttribute("userEditError", "We only accept .png,.jpg or .jpeg");
             request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
         }
         String mimeType = getServletContext().getMimeType(fileName);
         if (mimeType == null || (!mimeType.equals("image/png") && !mimeType.equals("image/jpeg"))) {
-            sesh.setAttribute("userEditError", "Invalid file type. We only accept .png, .jpg, or .jpeg files.");
-            sesh.removeAttribute("userEditSuccess");
+            request.setAttribute("userEditError", "Invalid file type. We only accept .png, .jpg, or .jpeg files.");
             request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
             return; 
         }
@@ -78,8 +76,7 @@ public class AvatarChangeUser extends HttpServlet {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        sesh.setAttribute("userEditSuccess", "Update Success");
-        sesh.removeAttribute("userEditError");
+        request.setAttribute("userEditSuccess", "Update Success");
         request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
     }
     private String getFileName(Part part) {

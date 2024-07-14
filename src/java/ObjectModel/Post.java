@@ -14,6 +14,7 @@ public class Post {
     private String detail;
     int category;
     private String postImg;
+    public Post(){}
     public Post(int postID,int userID, Date updatedDate, String title, String detail, int category, String postImg) {
         this.postID=postID;
         this.userID = userID;
@@ -97,5 +98,14 @@ public class Post {
         }
 
         return postList;
+    }
+    public void onePost(ResultSet rs) throws SQLException{
+        this.postID=rs.getInt("postID");
+        this.userID=rs.getInt("userID");
+        this.title=rs.getString("title");
+        this.updatedDate=rs.getDate("updatedDate");
+        this.detail=rs.getString("detail");
+        this.category=rs.getInt("category");
+        this.postImg=rs.getString("postImg");
     }
 }

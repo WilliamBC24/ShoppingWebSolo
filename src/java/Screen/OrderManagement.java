@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,19 +53,24 @@ public class OrderManagement extends HttpServlet {
                 request.getRequestDispatcher("JSP/Dashboard/order.jsp").forward(request, response);
             }
         } else if ("search".equals(action)) {
+            HttpSession sesh = request.getSession();
             page = request.getParameter("page");
             currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
             offset = (currentPage - 1) * ITEMS_PER_PAGE;
             request.setAttribute("currentPage", currentPage);
 
-            String search = request.getParameter("search");
+            String search = request.getParameter("searchOrder");
+            sesh.removeAttribute("searchOrder");
+            if (search != null) {
+                sesh.setAttribute("searchOrder", search);
+            }
             String sort = (request.getParameter("sort") == null || request.getParameter("sort").isEmpty()) ? "username" : request.getParameter("sort");
-            String order = (request.getParameter("order")==null||request.getParameter("order").isEmpty())?"ASC":request.getParameter("order");
+            String order = (request.getParameter("order") == null || request.getParameter("order").isEmpty()) ? "ASC" : request.getParameter("order");
             if (search == null || search.isEmpty()) {
                 Connection con;
                 PreparedStatement pstm;
                 ResultSet rs;
-                String sql = "SELECT * FROM orders ORDER BY " + sort + " " + order + " LIMIT ? OFFSET ?";
+                String sql = "SELECT * FROM orders ORDER BY " + sort + " " + order + " LIMIT ? OFFSET ? ";
                 try {
                     con = DBContext.getConnection();
                     pstm = con.prepareStatement(sql);
@@ -84,13 +90,15 @@ public class OrderManagement extends HttpServlet {
             }
 
             String sql = "SELECT * FROM orders WHERE username LIKE ?";
-            sql += "ORDER BY " + sort + " " + order;
+            sql += "ORDER BY " + sort + " " + order + " LIMIT ? OFFSET ?";
             ResultSet rs;
             try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
                 ps.setString(1, '%' + search + '%');
+                ps.setInt(2, ITEMS_PER_PAGE);
+                ps.setInt(3, offset);
                 rs = ps.executeQuery();
                 List<Order> orderList = Order.getOrder(rs);
-                int totalOrders = getTotalOrders(con);
+                int totalOrders = getTotalOrdersSearch(con, search);
                 int totalPages = (int) Math.ceil((double) totalOrders / ITEMS_PER_PAGE);
                 request.setAttribute("totalPages", totalPages);
                 request.setAttribute("orderList", orderList);
@@ -99,7 +107,7 @@ public class OrderManagement extends HttpServlet {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM orders LIMIT ? OFFSET ?");) {
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM orders  order by username asc LIMIT ? OFFSET ?");) {
 
                 pstm.setInt(1, ITEMS_PER_PAGE);
                 pstm.setInt(2, offset);
@@ -122,6 +130,17 @@ public class OrderManagement extends HttpServlet {
     private int getTotalOrders(Connection con) throws SQLException {
         String countQuery = "SELECT COUNT(*) FROM orders";
         try (PreparedStatement pstm = con.prepareStatement(countQuery); ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+    private int getTotalOrdersSearch(Connection con, String search) throws SQLException {
+        try (PreparedStatement pstm = con.prepareStatement("SELECT count(*) FROM orders WHERE username LIKE ?");) {
+            pstm.setString(1, '%' + search + '%');
+            ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
             }

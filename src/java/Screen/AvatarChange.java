@@ -35,20 +35,19 @@ public class AvatarChange extends HttpServlet {
         Part filePart = request.getPart("file");
         String fileName = getFileName(filePart);
         if (!fileName.toLowerCase().endsWith(".png") && !fileName.toLowerCase().endsWith(".jpg") && !fileName.toLowerCase().endsWith(".jpeg")) {
-            sesh.setAttribute("editError", "We only accept .png,.jpg or .jpeg");
-            sesh.removeAttribute("editSuccess");
+            request.setAttribute("editError", "We only accept .png,.jpg or .jpeg");
             request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
             return;
         }
         String mimeType = getServletContext().getMimeType(fileName);
         if (mimeType == null || (!mimeType.equals("image/png") && !mimeType.equals("image/jpeg"))) {
-            sesh.setAttribute("editError", "Invalid file type. We only accept .png, .jpg, or .jpeg files.");
-            sesh.removeAttribute("editSuccess");
+            request.setAttribute("editError", "Invalid file type. We only accept .png, .jpg, or .jpeg files.");
             request.getRequestDispatcher("JSP/Dashboard/editprofile.jsp").forward(request, response);
             return; 
         }
         User user = (User) sesh.getAttribute("loggedinuser");
         int userID = user.getUserID();
+        
         File uploadDir = new File(UPLOAD_DIR);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
@@ -59,6 +58,7 @@ public class AvatarChange extends HttpServlet {
             Files.copy(input, file.toPath());
         }
         String newImgPath = STORE + newName;
+        
         try {
             Connection con = DBContext.getConnection();
             PreparedStatement ps = con.prepareStatement("update user set avatarImg=? where userid=?");
@@ -80,8 +80,7 @@ public class AvatarChange extends HttpServlet {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        sesh.setAttribute("editSuccess", "Update Success");
-        sesh.removeAttribute("editError");
+        request.setAttribute("editSuccess", "Update Success");
         request.getRequestDispatcher("ProfileManagement").forward(request, response);
     }
 

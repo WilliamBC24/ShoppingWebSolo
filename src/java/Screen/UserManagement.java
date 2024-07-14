@@ -29,8 +29,6 @@ public class UserManagement extends HttpServlet {
             throws ServletException, IOException {
         SessionVerification.checkAdmin(request, response);
         HttpSession sesh = request.getSession();
-        sesh.removeAttribute("userEditError");
-        sesh.removeAttribute("userEditSuccess");
         String page = request.getParameter("page");
         int currentPage = (page == null || page.isEmpty()) ? 1 : Integer.parseInt(page);
         int offset = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -74,8 +72,6 @@ public class UserManagement extends HttpServlet {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if ("change".equals(action)) {
-            sesh.removeAttribute("userEditError");
-            sesh.removeAttribute("userEditSuccess");
             String username = request.getParameter("username");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
@@ -94,13 +90,12 @@ public class UserManagement extends HttpServlet {
             if (password != null && !password.isEmpty() || rePassword != null && !rePassword.isEmpty()) {
                 String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,100}$";
                 if (!password.equals(rePassword)) {
-                    sesh.setAttribute("userEditError", "Passwords should match");
-                    sesh.removeAttribute("userEditSuccess");
+                    request.setAttribute("userEditError", "Passwords should match");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
                 }
                 if (!RegexCheck.match(password, passwordRegex)) {
-                    sesh.setAttribute("userEditError", "Password must be 8-100 characters long, contains at least a letter, a number and a special character");
+                    request.setAttribute("userEditError", "Password must be 8-100 characters long, contains at least a letter, a number and a special character");
                     sesh.removeAttribute("userEditSuccess");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
@@ -109,8 +104,7 @@ public class UserManagement extends HttpServlet {
             if (email != null && !email.isEmpty()) {
                 String emailRegex = "^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$";
                 if (!RegexCheck.match(email, emailRegex)) {
-                    sesh.setAttribute("userEditError", "Please use correct email format");
-                    sesh.removeAttribute("userEditSuccess");
+                    request.setAttribute("userEditError", "Please use correct email format");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
                 }
@@ -118,8 +112,7 @@ public class UserManagement extends HttpServlet {
             if (phoneNumber != null && !phoneNumber.isEmpty()) {
                 String phoneRegex = "^\\d{7,12}$";
                 if (!RegexCheck.match(phoneNumber, phoneRegex)) {
-                    sesh.setAttribute("userEditError", "Please use correct phone format");
-                    sesh.removeAttribute("userEditSuccess");
+                    request.setAttribute("userEditError", "Please use correct phone format");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
                 }
@@ -135,8 +128,7 @@ public class UserManagement extends HttpServlet {
                 psC.setInt(2, userID);
                 rsC = psC.executeQuery();
                 if (rsC.next()) {
-                    sesh.setAttribute("userEditError", "Username already taken");
-                    sesh.removeAttribute("userEditSuccess");
+                    request.setAttribute("userEditError", "Username already taken");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
                 } else {
@@ -145,8 +137,7 @@ public class UserManagement extends HttpServlet {
                             fields.add("username = ?");
                             values.add(username);
                         } else {
-                            sesh.setAttribute("userEditError", "You can't use old username");
-                            sesh.removeAttribute("userEditSuccess");
+                            request.setAttribute("userEditError", "You can't use old username");
                             request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                             return;
                         }
@@ -161,8 +152,7 @@ public class UserManagement extends HttpServlet {
                     fields.add("email = ?");
                     values.add(email);
                 } else {
-                    sesh.setAttribute("userEditError", "You can't use old email");
-                    sesh.removeAttribute("userEditSuccess");
+                    request.setAttribute("userEditError", "You can't use old email");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
                 }
@@ -177,8 +167,7 @@ public class UserManagement extends HttpServlet {
                     fields.add("password = ?");
                     values.add(newPass);
                 } else {
-                    sesh.setAttribute("userEditError", "You can't use old password");
-                    sesh.removeAttribute("userEditSuccess");
+                    request.setAttribute("userEditError", "You can't use old password");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
                 }
@@ -192,8 +181,7 @@ public class UserManagement extends HttpServlet {
                     fields.add("phoneNumber = ?");
                     values.add(phoneNumber);
                 } else {
-                    sesh.setAttribute("userEditError", "You can't use old phone number");
-                    sesh.removeAttribute("userEditSuccess");
+                    request.setAttribute("userEditError", "You can't use old phone number");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
                 }
@@ -203,8 +191,7 @@ public class UserManagement extends HttpServlet {
                     fields.add("firstName = ?");
                     values.add(firstName);
                 } else {
-                    sesh.setAttribute("userEditError", "You can't use old first name");
-                    sesh.removeAttribute("userEditSuccess");
+                    request.setAttribute("userEditError", "You can't use old first name");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
                 }
@@ -214,8 +201,7 @@ public class UserManagement extends HttpServlet {
                     fields.add("lastName = ?");
                     values.add(lastName);
                 } else {
-                    sesh.setAttribute("userEditError", "You can't use old last name");
-                    sesh.removeAttribute("userEditSuccess");
+                    request.setAttribute("userEditError", "You can't use old last name");
                     request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
                     return;
                 }
@@ -249,8 +235,7 @@ public class UserManagement extends HttpServlet {
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
-            sesh.setAttribute("userEditSuccess", "Update Success");
-            sesh.removeAttribute("userEditError");
+            request.setAttribute("userEditSuccess", "Update Success");
             request.getRequestDispatcher("JSP/Dashboard/edituser.jsp").forward(request, response);
         } else if ("search".equals(action)) {
             page = request.getParameter("page");
@@ -258,14 +243,18 @@ public class UserManagement extends HttpServlet {
             offset = (currentPage - 1) * ITEMS_PER_PAGE;
             request.setAttribute("currentPage", currentPage);
 
-            String search = request.getParameter("search");
+            String search = request.getParameter("searchUser");
+            sesh.removeAttribute("searchUser");
+            if (search != null) {
+                sesh.setAttribute("searchUser", search);
+            }
             String sort = (request.getParameter("sort") == null || request.getParameter("sort").isEmpty()) ? "username" : request.getParameter("sort");
-            String order = (request.getParameter("order")==null||request.getParameter("order").isEmpty())?"ASC":request.getParameter("order");
+            String order = (request.getParameter("order") == null || request.getParameter("order").isEmpty()) ? "ASC" : request.getParameter("order");
             if (search == null || search.isEmpty()) {
                 Connection con;
                 PreparedStatement pstm;
                 ResultSet rs;
-                String sql = "SELECT * FROM user ORDER BY " + sort + " " + order + " LIMIT ? OFFSET ?";
+                String sql = "SELECT * FROM user ORDER BY " + sort + " " + order + " LIMIT ? OFFSET ? ";
                 try {
                     con = DBContext.getConnection();
                     pstm = con.prepareStatement(sql);
@@ -291,7 +280,7 @@ public class UserManagement extends HttpServlet {
                 ps.setString(1, '%' + search + '%');
                 rs = ps.executeQuery();
                 List<User> userList = User.getUser(rs);
-                int totalUsers = getTotalUsers(con);
+                int totalUsers = getTotalUsersSearch(con,search);
                 int totalPages = (int) Math.ceil((double) totalUsers / ITEMS_PER_PAGE);
                 request.setAttribute("totalPages", totalPages);
                 request.setAttribute("userList", userList);
@@ -301,7 +290,7 @@ public class UserManagement extends HttpServlet {
             }
         } else {
 
-            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM user LIMIT ? OFFSET ?");) {
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM user order by username asc LIMIT ? OFFSET ? ");) {
                 pstm.setInt(1, ITEMS_PER_PAGE);
                 pstm.setInt(2, offset);
                 ResultSet rs = pstm.executeQuery();
@@ -323,6 +312,17 @@ public class UserManagement extends HttpServlet {
     private int getTotalUsers(Connection con) throws SQLException {
         String countQuery = "SELECT COUNT(*) FROM user";
         try (PreparedStatement pstm = con.prepareStatement(countQuery); ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+    private int getTotalUsersSearch(Connection con, String search) throws SQLException {
+        try (PreparedStatement pstm = con.prepareStatement("SELECT count(*) FROM user WHERE username LIKE ?");) {
+            pstm.setString(1, '%' + search + '%');
+            ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
             }
