@@ -75,7 +75,7 @@
                         </table>
                         <div class="pagination">
                             <c:if test="${currentPage != 1}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/UserManagement?page=${currentPage-1}&sort=${param.sort}&order=${param.order}&action=search'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/UserManagement?page=${currentPage-1}&sort=${param.sort}&order=${param.order}&action=search&searchUser=${searchUser}'">
                                     <i class="fas fa-angle-left"></i>
                                 </button>
                             </c:if>
@@ -86,7 +86,7 @@
                             </c:if>
                             <button>${currentPage}</button>
                             <c:if test="${currentPage != totalPages}">
-                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/UserManagement?page=${currentPage+1}&sort=${param.sort}&order=${param.order}&action=search'">
+                                <button onclick="window.location.href = 'http://localhost:8080/stbcStore/UserManagement?page=${currentPage+1}&sort=${param.sort}&order=${param.order}&action=search&searchUser=${searchUser}'">
                                     <i class="fas fa-angle-right"></i>
                                 </button>
                             </c:if>
