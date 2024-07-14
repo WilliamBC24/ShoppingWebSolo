@@ -40,10 +40,10 @@
                             <tbody>
                                 <c:forEach var="user" items="${userList}">
                                     <tr>
-                                        <td>${user.username}</td>
-                                        <td>${user.email}</td>
-                                        <td>${user.phoneNumber}</td>
-                                        <td>
+                                        <td style="width:350px">${user.username}</td>
+                                        <td style="width:350px">${user.email}</td>
+                                        <td style="width:350px">${user.phoneNumber}</td>
+                                        <td style="width:350px">
                                             <c:choose>
                                                 <c:when test="${user.accessLevel == 1}">
                                                     Customer
@@ -62,11 +62,11 @@
                                         <td  style="display:flex; justify-content: space-around;">
                                             <form action="UserManagement" method="post">
                                                 <input type="hidden" name="username" value="${user.userID}">
-                                                <button type="submit" name="action" value="edit">Edit</button>
+                                                <button type="submit" name="action" value="edit"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/edit.svg" width="30px" height="30px" alt="edit"></button>
                                             </form>
                                             <form action="UserManagement" method="post">
                                                 <input type="hidden" name="username" value="${user.userID}">
-                                                <button type="submit" name="action" value="delete">Delete</button>
+                                                <button type="submit" name="action" value="delete"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/delete.svg" width="30px" height="30px" alt="delete"></button>
                                             </form>
                                         </td>
                                     </tr>

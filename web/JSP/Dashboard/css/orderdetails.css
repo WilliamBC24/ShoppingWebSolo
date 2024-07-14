@@ -22,31 +22,18 @@ body {
     padding: 20px;
 }
 
-.overview {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
-    font-size: 18px;
-    img{
-        width: 50px;
-    }
-}
 
-.overview-item {
-    text-align: center;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 22%;
-}
+
+
 
 .form-section {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    margin-top:50px;
+    h2{
+        margin-bottom:15px;
+    }
 }
 
 .form-alert {
@@ -56,6 +43,7 @@ body {
     border-radius: 4px;
     margin: 10px 0;
 }
+
 table {
     width: 100%;
     margin: 20px 0;
@@ -67,8 +55,6 @@ table {
     th,td{
         padding: 10px;
         border-top:solid black 1px;
-        text-align: center;
-        overflow:hidden;
     }
     th{
         background-color: #f5f5f5;
@@ -90,4 +76,10 @@ table {
             background-color: #f5f5f5;
         }
     }
+}
+select{
+    font-size:16px;
+    border:none;
+    background:none;
+    
 }

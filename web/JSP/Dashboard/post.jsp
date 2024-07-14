@@ -39,17 +39,17 @@
                             <tbody>
                                 <c:forEach var="post" items="${postList}">
                                     <tr>
-                                        <td>${post.postID}</td>
-                                        <td>${post.title}</td>
-                                        <td>${post.updatedDate}</td>
+                                        <td style="width:450px">${post.postID}</td>
+                                        <td style="width:450px">${post.title}</td>
+                                        <td style="width:450px">${post.updatedDate}</td>
                                         <td  style="display:flex; justify-content: space-around;">
                                             <form action="PostManagement" method="post">
                                                 <input type="hidden" name="postID" value="${post.postID}">
-                                                <button type="submit" name="action" value="edit">Edit</button>
+                                                <button type="submit" name="action" value="edit"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/edit.svg" width="30px" height="30px" alt="edit"></button>
                                             </form>
                                             <form action="PostManagement" method="post">
                                                 <input type="hidden" name="postID" value="${post.postID}">
-                                                <button type="submit" name="action" value="delete">Delete</button>
+                                                <button type="submit" name="action" value="delete"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/delete.svg" width="30px" height="30px" alt="delete"></button>
                                             </form>
                                         </td>
                                     </tr>

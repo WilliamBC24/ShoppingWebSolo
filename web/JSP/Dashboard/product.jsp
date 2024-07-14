@@ -36,6 +36,7 @@
                                     <th>Product title</th>
                                     <th>Product price</th>
                                     <th>Product quantity</th>
+                                    <th>Product image</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -43,21 +44,22 @@
                             <tbody>
                                 <c:forEach var="product" items="${productList}">
                                     <tr>
-                                        <td>${product.title}</td>
-                                        <td>$${product.priceOut}</td>
-                                        <td>${product.quantityInStock}</td>
+                                        <td style="width:300px">${product.title}</td>
+                                        <td style="width:300px">$${product.priceOut}</td>
+                                        <td style="width:300px">${product.quantityInStock}</td>
+                                        <td style="width:400px"><img src="${product.productImg}" width="50px" height="50px" alt="product img"/></td>
                                         <td style="display:flex; justify-content: space-evenly;">
                                             <form action="ProductManagement" method="post">
                                                 <input type="hidden" name="productID" value="${product.productID}">
-                                                <button type="submit" name="action" value="edit">Edit</button>
+                                                <button type="submit" name="action" value="edit"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/edit.svg" width="30px" height="30px" alt="edit"></button>
                                             </form>
                                             <form action="ProductManagement" method="post">
                                                 <input type="hidden" name="productID" value="${product.productID}">
-                                                <button type="submit" name="action" value="delete">Delete</button>
+                                                <button type="submit" name="action" value="delete"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/delete.svg" width="30px" height="30px" alt="delete"></button>
                                             </form>
                                             <form action="ProductManagement" method="post">
-                                                <input type="hidden" name="productID" value="${product.productID}">
-                                                <button type="submit" name="action" value="feedback">View Feedback</button>
+                                                <input type="hidden" name="productName" value="${product.title}">
+                                                <button type="submit" name="action" value="feedback"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/feedback.svg" width="30px" height="30px" alt="feedback"></button>
                                             </form>
                                         </td>
                                     </tr>

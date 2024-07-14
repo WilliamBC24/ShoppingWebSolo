@@ -36,10 +36,10 @@
                             <tbody>
                                 <c:forEach var="order" items="${orderList}">
                                     <tr>
-                                        <td>${order.username}</td>
-                                        <td>${order.orderDate}</td>
+                                        <td style="width:450px">${order.username}</td>
+                                        <td style="width:450px">${order.orderDate}</td>
                                 <form action="OrderManagement" method="post">
-                                    <td>
+                                    <td style="width:500px">
                                         <select name="status">
                                             <option value="0" ${order.status == 0 ? 'selected' : ''}>Preparing</option>
                                             <option value="1" ${order.status == 1 ? 'selected' : ''}>Delivering</option>
@@ -49,11 +49,12 @@
                                         </select>
                                     </td>
 
-                                    <td style="display: flex;justify-content: center">
-
+                                    <td style="display: flex;justify-content: space-evenly">
+                                        <input type="hidden" name="username" value="${order.username}">
+                                        <input type="hidden" name="totalAmount" value="${order.totalAmount}">
                                         <input type="hidden" name="orderID" value="${order.orderID}">
-                                        <button type="submit" name="action" value="edit">Edit</button>
-
+                                        <button type="submit" name="action" value="edit"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/edit.svg" width="30px" height="30px" alt="edit"></button>
+                                        <button type="submit" name="action" value="view"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/view.svg" width="30px" height="30px" alt="view"></button>
                                     </td>
                                 </form>
                                 </tr>

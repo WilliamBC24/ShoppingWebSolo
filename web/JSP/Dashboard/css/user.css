@@ -29,6 +29,9 @@ body {
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #ccc;
+    h2{
+    margin-bottom:20px;
+}
 }
 
 .form-alert {
@@ -49,8 +52,9 @@ table {
     overflow:hidden;
     th,td{
         padding: 10px;
-        border-left:solid black 1px;
         border-top:solid black 1px;
+        text-align: center;
+        overflow:hidden;
     }
     th{
         background-color: #f5f5f5;

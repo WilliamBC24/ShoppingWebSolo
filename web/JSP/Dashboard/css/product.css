@@ -48,8 +48,9 @@ table {
     overflow:hidden;
     th,td{
         padding: 10px;
-        border-left:solid black 1px;
         border-top:solid black 1px;
+        text-align: center;
+        overflow:hidden;
     }
     th{
         background-color: #f5f5f5;

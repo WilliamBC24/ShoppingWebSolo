@@ -16,7 +16,6 @@
                 <section class="content">
                     <div class="form-section">
                         <h2>My Orders</h2>
-                        <jsp:include page="searchdropdown/myorders.jsp"/>
                         <c:if test="${not empty myOrderError}">
                             <div class="form-alert">
 
@@ -62,8 +61,10 @@
                                         </td>
                                         <td style="display: flex; justify-content: center;align-items: center">
                                             <form action="MyOrders" method="post">
-                                                <input type="hidden" name="order" value="${myOrder.orderID}">
-                                                <button type="submit" name="action" value="view">Edit</button>
+                                                <input type="hidden" name="usernamez" value="${myOrder.username}">
+                                                <input type="hidden" name="totalAmount" value="${myOrder.totalAmount}">
+                                                <input type="hidden" name="orderID" value="${myOrder.orderID}">
+                                                <button type="submit" name="action" value="view"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/view.svg" width="30px" height="30px" alt="edit"></button>
                                             </form>
                                         </td>
                                     </tr>
