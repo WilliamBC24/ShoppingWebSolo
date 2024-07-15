@@ -17,6 +17,7 @@
                     <div class="form-section">
                         <div style="display: flex;justify-content: space-between;">
                             <h2>${productName}</h2>
+                            <h3>${rating}<i style="color:gold" class="fas fa-star star-icon"></i></h3>
                         </div>
 
                         <jsp:include page="searchdropdown/productfeedback.jsp"/>
@@ -44,8 +45,8 @@
                                     <tr>
                                         <td style="width:200px">${feedback.username}</td>
                                         <td style="width:500px">${feedback.feedbackDetail}</td>
-                                        <td style="width:350px"><c:forEach begin="0" end="${feedback.star}">
-                                                <img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/star.svg" width="30px" height="30px" alt="star">
+                                        <td style="width:350px"><c:forEach begin="1" end="${feedback.star}">
+                                                <i style="color:gold" class="fas fa-star star-icon"></i>
                                             </c:forEach></td>
                                         <td style="width:200px"><img src="${feedback.attachedImg}" width="50px" height="50px" alt="feedback img"/></td>
                                         <td style="display:flex; justify-content: space-evenly;align-items: center">
