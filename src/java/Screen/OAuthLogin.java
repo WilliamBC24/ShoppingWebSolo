@@ -3,6 +3,7 @@ package Screen;
 import Manager.DBContext;
 import Manager.Email;
 import Manager.OAuthUser;
+import ObjectModel.User;
 import Security.SessionVerification;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,6 +27,7 @@ public class OAuthLogin extends HttpServlet {
         Connection connection;
         final String LOGIN_STATUS = "loginstatus";
         final String LOGIN = "JSP/Login/login.jsp";
+        final String DASH = "index.jsp";
         final String OAUTH_STATUS = "oauthstatus";
         final String OAUTH = "JSP/OAuthInfo/oauth.jsp";
         String username = request.getParameter("username").trim();
@@ -71,11 +73,15 @@ public class OAuthLogin extends HttpServlet {
                 Email sendEmail = new Email();
                 sendEmail.welcomeEmail(oauthEmail);
                 request.setAttribute(LOGIN_STATUS, "oauth success");
-                PreparedStatement news=connection.prepareStatement("select userid, accesslevel from user where username=?");
+                PreparedStatement news=connection.prepareStatement("select * from user where username=?");
+                news.setString(1,username);
                 ResultSet rNew=news.executeQuery();
-                session.setAttribute("userID", rNew.getString("userid"));
-                session.setAttribute("accessLevel", rNew.getString("accessLevel"));
-                request.getRequestDispatcher(LOGIN).forward(request, response);
+                if(rNew.next()){
+                    User newUser=new User();
+                    newUser.summonUser(rNew);
+                    session.setAttribute("loggedinuser",newUser);
+                }
+                request.getRequestDispatcher(DASH).forward(request, response);
             } else {
                 request.setAttribute(LOGIN_STATUS, "An error occured. Please try again later");
                 request.getRequestDispatcher(LOGIN).forward(request, response);

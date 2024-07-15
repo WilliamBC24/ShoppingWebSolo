@@ -50,8 +50,14 @@ public class OAuth extends HttpServlet {
                 if (rExist.getString("oauthprovider").equals("google")
                         && rExist.getString("googleid").equals(user.getId())) {
                     request.setAttribute("loginstatus", "oauth success");
+                    PreparedStatement pszz=connection.prepareStatement(
+                    "select * from user where email=?");
+                    pszz.setString(1, oauthEmail);
+                    ResultSet rszz=pszz.executeQuery();
                     User userz = new User();
-                    userz.summonUser(rExist);
+                    if(rszz.next()){
+                        userz.summonUser(rszz);
+                    }
                     session.setAttribute("loggedinuser", userz);
                     request.getRequestDispatcher("index.jsp").forward(request, response);
                 } else {
