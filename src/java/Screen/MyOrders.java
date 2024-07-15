@@ -46,8 +46,6 @@ public class MyOrders extends HttpServlet {
 
             String usernamez = request.getParameter("usernamez");
             request.setAttribute("usernamez", usernamez);
-            String totalAmount = request.getParameter("totalAmount");
-            request.setAttribute("totalAmount", totalAmount);
             String orderID = request.getParameter("orderID");
             try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("SELECT * FROM orderdetails where orderID=? LIMIT ? OFFSET ?")) {
                 ps.setString(1, orderID);
@@ -66,6 +64,15 @@ public class MyOrders extends HttpServlet {
                     images.add(productImg);
                     System.out.println("Product Image Path: " + productImg);
                 }
+                
+                double totalAmount=0.0;
+                PreparedStatement getPrice=con.prepareStatement("select round(sum(price*amount),2) from orderdetails where orderID=?");
+                getPrice.setString(1,orderID);
+                ResultSet price=getPrice.executeQuery();
+                if(price.next()){
+                    totalAmount=price.getDouble(1);
+                }
+                request.setAttribute("totalAmount",totalAmount);
                 
                 int totalOrders = getTotalOrdersView(con,orderID);
                 int totalPages = (int) Math.ceil((double) totalOrders / ITEMS_PER_PAGE);
