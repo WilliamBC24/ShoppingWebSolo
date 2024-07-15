@@ -383,6 +383,15 @@ public class ProductManagement extends HttpServlet {
                 List<Feedback> feedbackList=Feedback.getFeedback(rs);
                 int totalFeedback = getTotalFeedback(con,productName);
                 int totalPages = (int) Math.ceil((double) totalFeedback / ITEMS_PER_PAGE);
+                
+                double realRating=0.0;
+                PreparedStatement getRating=con.prepareStatement("SELECT SUM(star) / COUNT(star) AS averageRating FROM feedback WHERE productName = ?");
+                getRating.setString(1,productName);
+                ResultSet rating=getRating.executeQuery();
+                if(rating.next()){
+                    realRating=rating.getDouble(1);
+                }
+                request.setAttribute("rating", realRating);
                 request.setAttribute("totalPages", totalPages);
                 request.setAttribute("feedbackList", feedbackList);
                 request.getRequestDispatcher("JSP/Dashboard/productfeedback.jsp").forward(request, response);
@@ -396,7 +405,7 @@ public class ProductManagement extends HttpServlet {
                 ResultSet rs = pstm.executeQuery();
                 List<Product> productList = Product.getProduct(rs);
                 int totalProducts = getTotalProducts(con);
-                int totalPages = (int) Math.ceil((double) totalProducts / ITEMS_PER_PAGE);
+                int totalPages = (int) Math.ceil((double) totalProducts / ITEMS_PER_PAGE);                    
                 request.setAttribute("totalPages", totalPages);
                 request.setAttribute("productList", productList);
                 request.getRequestDispatcher("JSP/Dashboard/product.jsp").forward(request, response);
