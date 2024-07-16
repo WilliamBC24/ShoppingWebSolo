@@ -29,7 +29,7 @@
         position: absolute;
         width: 2000px;
         height: 2000px;
-        background: linear-gradient(-45deg,#929aa9,#45434f);
+        background: linear-gradient(-45deg,#45434f,#03cafc);
         top: -10%;
         right: 50%;
         transform: translateY(-50%);
@@ -102,7 +102,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 220px;
+            width: 370px;
             height: 46px;
             margin: 0 0.45rem;
             border: 1px solid #333;
@@ -142,7 +142,7 @@ form{
     border: none;
     outline: none;
     border-radius: 49px;
-    background-color: #838599;
+    background-color: #03cafc;
     color: #fff;
     text-transform: uppercase;
     font-weight: 600;

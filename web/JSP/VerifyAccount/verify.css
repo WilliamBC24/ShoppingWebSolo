@@ -6,7 +6,7 @@
 
 .smallbox{
     width: 50%;
-    height: 50vh;
+    height: 40vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,6 +79,7 @@
 form{
     display: flex;
     justify-content: center;
+    margin-top:50px;
     align-items: center;
     flex-direction: column;
     padding: 0 5rem;
@@ -88,12 +89,14 @@ form{
 }
 
 .button{
-    width: 150px;
+    width: 180px;
     height: 49px;
+    display: flex;
+    justify-content: center;
     border: none;
     outline: none;
     border-radius: 49px;
-    background-color: #838599;
+    background-color: #03cafc;
     color: #fff;
     text-transform: uppercase;
     font-weight: 600;

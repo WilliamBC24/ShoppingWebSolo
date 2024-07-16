@@ -113,6 +113,22 @@
             <file-size-threshold>1048576</file-size-threshold>
         </multipart-config>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerSupport</servlet-name>
+        <servlet-class>Screen.CustomerSupport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductListing</servlet-name>
+        <servlet-class>Screen.ProductListing</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Homepage</servlet-name>
+        <servlet-class>Screen.Homepage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostListing</servlet-name>
+        <servlet-class>Screen.PostListing</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ConnectionTest</servlet-name>
         <url-pattern>/ConnectionTest</url-pattern>
@@ -200,5 +216,21 @@
     <servlet-mapping>
         <servlet-name>ProductImg</servlet-name>
         <url-pattern>/ProductImg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerSupport</servlet-name>
+        <url-pattern>/CustomerSupport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductListing</servlet-name>
+        <url-pattern>/ProductListing</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Homepage</servlet-name>
+        <url-pattern>/Homepage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostListing</servlet-name>
+        <url-pattern>/PostListing</url-pattern>
     </servlet-mapping>
 </web-app>

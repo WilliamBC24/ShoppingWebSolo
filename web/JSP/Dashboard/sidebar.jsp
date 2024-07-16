@@ -19,6 +19,6 @@
             <li onclick="window.location.href = '${pageContext.request.contextPath}/SettingsManagement'">Settings</li>
             </c:if>
 
-        <li onclick="window.location.href = '${pageContext.request.contextPath}/index.jsp'">Back</li>
+        <li onclick="window.location.href = '${pageContext.request.contextPath}/Homepage'">Back</li>
     </ul>
 </nav>

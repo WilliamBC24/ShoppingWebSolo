@@ -61,8 +61,7 @@
                             </c:forEach>    
                             </tbody>
                         </table>
-                    </div>
-                    <div class="pagination">
+                        <div class="pagination">
                         <c:if test="${currentPage != 1}">
                             <button onclick="window.location.href = 'http://localhost:8080/stbcStore/OrderManagement?page=${currentPage-1}&sort=${param.sort}&order=${param.order}&action=search&searchOrder=${searchOrder}'">
                                 <i class="fas fa-angle-left"></i>
@@ -85,6 +84,8 @@
                             </button>
                         </c:if>
                     </div>
+                    </div>
+                    
                 </section>
             </div>
         </div>
