@@ -87,6 +87,38 @@ public class Email {
             throw new RuntimeException(e);
         }
     }
+    
+    public void sendSupportEmail(String name, String email, String phone, String body){
+        
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+                new jakarta.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(USERNAME, PASSWORD);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(USERNAME));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("sonbltse184773@fpt.edu.vn"));
+            message.setSubject("Customer support");
+            String content = "Email: " + email + "\n" +
+                 "Name: " + name + "\n" +
+                 "Phone: " + phone + "\n" +
+                 body;
+            message.setText(content);
+
+            Transport.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void welcomeEmail(String address) {
         sendEmail(address, WELCOME, WELCOMEMESSAGE);

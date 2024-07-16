@@ -27,7 +27,7 @@ public class OAuthLogin extends HttpServlet {
         Connection connection;
         final String LOGIN_STATUS = "loginstatus";
         final String LOGIN = "JSP/Login/login.jsp";
-        final String DASH = "index.jsp";
+        final String DASH = "Homepage";
         final String OAUTH_STATUS = "oauthstatus";
         final String OAUTH = "JSP/OAuthInfo/oauth.jsp";
         String username = request.getParameter("username").trim();

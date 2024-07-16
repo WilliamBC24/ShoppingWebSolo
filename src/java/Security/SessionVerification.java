@@ -15,7 +15,7 @@ public class SessionVerification {
     public static void checkSession(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("loggedinuser") == null) {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Homepage").forward(request, response);
         }
     }
 
@@ -23,7 +23,7 @@ public class SessionVerification {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("loggedinuser");
         if (user == null) {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Homepage").forward(request, response);
         } else {
             if (user.getAccessLevel() < 2) {
                 request.getRequestDispatcher("ProfileManagement").forward(request, response);
@@ -35,7 +35,7 @@ public class SessionVerification {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("loggedinuser");
         if (user == null) {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Homepage").forward(request, response);
         } else {
             if (user.getAccessLevel() < 3) {
                 request.getRequestDispatcher("ProfileManagement").forward(request, response);
@@ -47,7 +47,7 @@ public class SessionVerification {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("loggedinuser");
         if (user != null) {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("JSP/FrontPage/index.jsp").forward(request, response);
         }
     }
 }

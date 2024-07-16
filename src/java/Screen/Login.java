@@ -40,13 +40,12 @@ public class Login extends HttpServlet {
                 pstm.setString(1, username);
                 ResultSet rs = pstm.executeQuery();
                 final String LOGIN_STATUS = "loginstatus";
-                final String INDEX = "index.jsp";
+                final String INDEX = "Homepage";
                 final String LOGIN = "JSP/Login/login.jsp";
                 if (rs.next()) {
                     String storedPass = rs.getString("password");
                     salt = rs.getString("salt");
                     if (storedPass.equals(PassHash.hashPass(password, salt))) {
-                        request.setAttribute(LOGIN_STATUS, "Login success");
                         User user = new User();
                         user.summonUser(rs);
                         session.setAttribute("loggedinuser", user);
@@ -126,7 +125,7 @@ public class Login extends HttpServlet {
                 pstm.setString(14, "none");
                 int addSuccess = pstm.executeUpdate();
                 if (addSuccess > 0) {
-                    request.getRequestDispatcher("JSP/Login/login.jsp").forward(request,response);
+                    request.getRequestDispatcher("Homepage").forward(request,response);
                     Email sendEmail = new Email();
                     sendEmail.welcomeEmail(email);
                 } else {
@@ -136,6 +135,9 @@ public class Login extends HttpServlet {
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else{
+            SessionVerification.alreadyLoggedIn(request,response);
+            request.getRequestDispatcher("JSP/Login/login.jsp").forward(request, response);
         }
     }
 
