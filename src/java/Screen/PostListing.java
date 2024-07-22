@@ -2,12 +2,17 @@ package Screen;
 
 import Manager.DBContext;
 import ObjectModel.Post;
+import ObjectModel.Product;
+import ObjectModel.User;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +33,24 @@ public class PostListing extends HttpServlet {
         int offset = (currentPage - 1) * ITEMS_PER_PAGE;
         request.setAttribute("currentPage", currentPage);
         String action = request.getParameter("action");
-        try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM post ORDER BY title ASC LIMIT ? OFFSET ?");) {
+        if("details".equals(action)){
+            String postID=request.getParameter("post");
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM post WHERE postID = ?");) {
+                pstm.setString(1, postID);
+                
+                ResultSet rs = pstm.executeQuery();
+
+                if(rs.next()){
+                    Post post = new Post();
+                    post.onePost(rs);
+                    request.setAttribute("post", post);
+                    request.getRequestDispatcher("JSP/FrontPage/postdetails.jsp").forward(request, response);
+                }
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM post ORDER BY title ASC LIMIT ? OFFSET ?");) {
                 pstm.setInt(1, ITEMS_PER_PAGE);
                 pstm.setInt(2, offset);
                 ResultSet rs = pstm.executeQuery();
@@ -41,6 +63,7 @@ public class PostListing extends HttpServlet {
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
     } 
 
     private int getTotalPosts(Connection con) throws SQLException {

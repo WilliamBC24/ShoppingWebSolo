@@ -16,7 +16,17 @@ public class Feedback {
     private String attachedImg;
     private Date feedbackDate;
 
-    public Feedback(String username, String productName, String feedbackDetail, int star, String attachedImg, Date feedbackDate) {
+    public Feedback( String username, String productName, String feedbackDetail, int star, String attachedImg, Date feedbackDate) {
+        this.username = username;
+        this.productName = productName;
+        this.feedbackDetail = feedbackDetail;
+        this.star = star;
+        this.attachedImg = attachedImg;
+        this.feedbackDate = feedbackDate;
+    }
+
+    public Feedback(int feedbackID, String username, String productName, String feedbackDetail, int star, String attachedImg, Date feedbackDate) {
+        this.feedbackID=feedbackID;
         this.username = username;
         this.productName = productName;
         this.feedbackDetail = feedbackDetail;
@@ -85,6 +95,7 @@ public class Feedback {
         List<Feedback> feedbackList = new ArrayList<>();
 
         while (rs.next()) {
+            int feedbackID = rs.getInt("feedbackID");
             String username = rs.getString("username");
             String productName = rs.getString("productName");
             String feedbackDetail = rs.getString("feedbackDetail");
@@ -92,7 +103,7 @@ public class Feedback {
             String attachedImg = rs.getString("attachedImg");
             Date feedbackDate = rs.getDate("feedbackDate");
 
-            Feedback feedback = new Feedback(username, productName, feedbackDetail, star, attachedImg, feedbackDate);
+            Feedback feedback = new Feedback(feedbackID,username, productName, feedbackDetail, star, attachedImg, feedbackDate);
             feedbackList.add(feedback);
         }
 

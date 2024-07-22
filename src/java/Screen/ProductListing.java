@@ -2,12 +2,16 @@ package Screen;
 
 import Manager.DBContext;
 import ObjectModel.Product;
+import ObjectModel.User;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +32,101 @@ public class ProductListing extends HttpServlet {
         int offset = (currentPage - 1) * ITEMS_PER_PAGE;
         request.setAttribute("currentPage", currentPage);
         String action = request.getParameter("action");
-        try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM product WHERE isActive <> 0 ORDER BY numbersSold ASC LIMIT ? OFFSET ?");) {
+        if("add".equals(action)){
+            HttpSession sesh=request.getSession();
+            String productID=request.getParameter("productID");
+            User user=(User)sesh.getAttribute("loggedinuser");
+            if(user==null){
+                request.getRequestDispatcher("JSP/Login/login.jsp").forward(request, response);
+                return;
+            }
+            int userID=user.getUserID();
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT quantityInStock FROM product WHERE productID = ?");) {
+                pstm.setString(1, productID);
+                ResultSet rs = pstm.executeQuery();
+                if(rs.next()){
+                    int stock=rs.getInt("quantityInStock");
+                    if(stock>0){
+                        try (PreparedStatement pstm1 = con.prepareStatement("SELECT * FROM cart WHERE userID = ? AND productID = ?");) {
+                            pstm1.setInt(1, userID);
+                            pstm1.setString(2, productID);
+                            ResultSet rs1 = pstm1.executeQuery(); 
+                            if(rs1.next()){
+                                try (PreparedStatement pstm2 = con.prepareStatement("UPDATE cart SET quantity = quantity + 1 WHERE userID = ? AND productID = ?");) {
+                                    pstm2.setInt(1, userID);
+                                    pstm2.setString(2, productID);
+                                    pstm2.executeUpdate();
+                                    try (PreparedStatement pstm3 = con.prepareStatement("UPDATE product SET quantityInStock = quantityInStock - 1 WHERE productID = ?");) {
+                                        pstm3.setString(1, productID);
+                                        pstm3.executeUpdate();
+                                    }
+                                }
+                            }else{
+                                try (PreparedStatement pstm2 = con.prepareStatement("INSERT INTO cart (userID, productID,quantity) VALUES (?, ?, 1)");) {
+                                    pstm2.setInt(1, userID);
+                                    pstm2.setString(2, productID);
+                                    pstm2.executeUpdate();
+                                    try (PreparedStatement pstm3 = con.prepareStatement("UPDATE product SET quantityInStock = quantityInStock - 1 WHERE productID = ?");) {
+                                        pstm3.setString(1, productID);
+                                        pstm3.executeUpdate();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                try (PreparedStatement cartCount = con.prepareStatement("select count(*) as count from cart where userID=?")) {
+                    cartCount.setInt(1, userID);
+                    try (ResultSet cartCountResult = cartCount.executeQuery()) {
+                        if (cartCountResult.next()) {
+                            sesh.setAttribute("itemincart", cartCountResult.getInt("count"));
+                        }
+                    }
+                }
+                response.sendRedirect("ProductListing");
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else if("details".equals(action)){
+            HttpSession sesh=request.getSession();
+            User user=(User)sesh.getAttribute("loggedinuser");
+            String username="";
+            if(user!=null){
+                username=user.getUsername();
+            }
+            String productID=request.getParameter("product");
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM product WHERE productID = ?");) {
+                pstm.setString(1, productID);
+                
+                ResultSet rs = pstm.executeQuery();
+
+                if(rs.next()){
+                    Product product = new Product();
+                    product.oneProduct(rs);
+                    request.setAttribute("product", product);
+                    PreparedStatement canReview=null;
+                    if(!username.equals("")){
+                    canReview=con.prepareStatement("SELECT od.productName FROM orderdetails od INNER JOIN orders o ON od.orderID = o.orderID INNER JOIN product p ON od.productName = p.title WHERE o.username = ? AND p.productID = ?;");
+                    canReview.setString(1,username);
+                    canReview.setString(2,productID);
+                    ResultSet yesReview=canReview.executeQuery();
+                    if (yesReview.next()) {
+                        request.setAttribute("canReview", "yes");
+                    } else {
+                        request.setAttribute("canReview", "no"); 
+                    }
+                    }else{
+                        request.setAttribute("canReview", "no");
+                    }
+                    
+                    request.getRequestDispatcher("JSP/FrontPage/productdetails.jsp").forward(request, response);
+                }
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM product WHERE isActive <> 0 ORDER BY numbersSold ASC LIMIT ? OFFSET ?");) {
                 pstm.setInt(1, ITEMS_PER_PAGE);
                 pstm.setInt(2, offset);
                 ResultSet rs = pstm.executeQuery();
@@ -41,6 +139,7 @@ public class ProductListing extends HttpServlet {
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
     } 
 
     private int getTotalProducts(Connection con) throws SQLException {

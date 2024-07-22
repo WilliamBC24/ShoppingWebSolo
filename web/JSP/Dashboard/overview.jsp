@@ -39,7 +39,7 @@
 <div class="overview">
     <div class="overview-item">
         <img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/get.svg" alt="">
-        <h2>Total Sales</h2>
+        <h2>Total Profit</h2>
         <p>$<span id="totalSales">Loading...</span></p>
     </div>
     <div class="overview-item">
@@ -49,7 +49,7 @@
     </div>
     <div class="overview-item">
         <img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/visit.svg" alt="">
-        <h2>Total Visitors</h2>
+        <h2>Total Users</h2>
         <p><span id="totalVisitors">Loading...</span></p>
     </div>
     <div class="overview-item">

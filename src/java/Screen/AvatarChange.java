@@ -30,7 +30,7 @@ public class AvatarChange extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UPLOAD_DIR = request.getServletContext().getRealPath("img");
+        UPLOAD_DIR = getServletContext().getRealPath("img");
         HttpSession sesh = request.getSession();
         Part filePart = request.getPart("file");
         String fileName = getFileName(filePart);
@@ -58,7 +58,7 @@ public class AvatarChange extends HttpServlet {
             Files.copy(input, file.toPath());
         }
         String newImgPath = STORE + newName;
-        
+
         try {
             Connection con = DBContext.getConnection();
             PreparedStatement ps = con.prepareStatement("update user set avatarImg=? where userid=?");

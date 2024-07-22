@@ -51,8 +51,9 @@
                                         <td style="width:200px"><img src="${feedback.attachedImg}" width="50px" height="50px" alt="feedback img"/></td>
                                         <td style="display:flex; justify-content: space-evenly;align-items: center">
                                             <form action="ProductManagement" method="post">
-                                                <input type="hidden" name="productID" value="${feedback.feedbackID}">
-                                                <button type="submit" name="action" value="delete"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/delete.svg" width="30px" height="30px" alt="delete"></button>
+                                                <input type="hidden" name="feedbackID" value="${feedback.feedbackID}">
+                                                <input type="hidden" name="productName" value="${productName}">
+                                                <button type="submit" name="action" value="deleteFeedback"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/delete.svg" width="30px" height="30px" alt="delete"></button>
                                             </form>
                                         </td>
                                     </tr>

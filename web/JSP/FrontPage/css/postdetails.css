@@ -1,0 +1,49 @@
+.containerx {
+    max-width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensures rounded corners apply correctly */
+}
+
+.product-detailsx {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+.product-infox {
+    flex: 2;
+}
+
+.product-infox h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+    font-family: 'Comic Sans MS', cursive; /* Fun and playful font */
+}
+
+.product-descriptionx p {
+    color: #666;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.product-infox .btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #f39c12; /* Fun orange color */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.product-infox .btn:hover {
+    background-color: #e67e22; /* Darker shade on hover */
+}

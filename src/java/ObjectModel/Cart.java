@@ -1,36 +1,52 @@
 package ObjectModel;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class Cart {
-    private int cartID;
     private int userID;
-    private String itemList;
-
-    public Cart(int userID, String itemList) {
-        this.userID = userID;
-        this.itemList = itemList;
+    private int productID;
+    private int quantity;
+    
+    public Cart(int userID, int productID, int quantity){
+        this.userID=userID;
+        this.productID=productID;
+        this.quantity=quantity;
     }
-
-    public int getCartID() {
-        return cartID;
-    }
-
-    public void setCartID(int cartID) {
-        this.cartID = cartID;
-    }
-
-    public int getUserID() {
+    //getter and settier
+    public int getUserID(){
         return userID;
     }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserID(int userID){
+        this.userID=userID;
     }
-
-    public String getItemList() {
-        return itemList;
+    public int getProductID(){
+        return productID;
     }
+    public void setProductID(int productID){
+        this.productID=productID;
+    }
+    public int getQuantity(){
+        return quantity;
+    }
+    public void setQuantity(int quantity){
+        this.quantity=quantity;
+    }
+    public static List<Cart> getCart(ResultSet rs) throws SQLException {
+        List<Cart> cartList = new ArrayList<>();
 
-    public void setItemList(String itemList) {
-        this.itemList = itemList;
+        while (rs.next()) {
+            int userID = rs.getInt("userID");
+            int productID = rs.getInt("productID");
+            int quantity = rs.getInt("quantity");
+
+            Cart cart = new Cart(userID, productID, quantity);
+            cartList.add(cart);
+        }
+
+        return cartList;
     }
 }

@@ -117,35 +117,6 @@
             </div>
         </div>
 
-        <div class="quickLogin" style="display:flex;justify-content: center">
-            <form action="${pageContext.request.contextPath}/Login" method="post" class="signin">
-
-                <input type="hidden" name="username" placeholder="Username" value="sonbui" class="logUser">
-
-                <input type="hidden" name="password" placeholder="Password" value="sonbui123@" class="logPass">
-
-                <button type="submit" id="loginbutton" name="action" value="Login" class="button logButton">Admin</button>
-            </form>
-
-            <form action="${pageContext.request.contextPath}/Login" method="post" class="signin">
-
-                <input type="hidden" name="username" placeholder="Username" value="randomUser777" class="logUser">
-
-                <input type="hidden" name="password" placeholder="Password" value="sonbui123@" class="logPass">
-
-                <button type="submit" id="loginbutton" name="action" value="Login" class="button logButton">Staff</button>
-            </form>
-            
-            <form action="${pageContext.request.contextPath}/Login" method="post" class="signin">
-
-                <input type="hidden" name="username" placeholder="Username" value="sonsonbuibui" class="logUser">
-
-                <input type="hidden" name="password" placeholder="Password" value="sonbui123@" class="logPass">
-
-                <button type="submit" id="loginbutton" name="action" value="Login" class="button logButton">User</button>
-            </form>
-        </div>
-
         <script src="${pageContext.request.contextPath}/JSP/Login/login.js"></script>
     </body>
 

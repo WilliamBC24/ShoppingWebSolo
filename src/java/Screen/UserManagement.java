@@ -36,17 +36,14 @@ public class UserManagement extends HttpServlet {
         String action = request.getParameter("action");
         if ("delete".equals(action)) {
             int userID = Integer.parseInt(request.getParameter("username"));
-            try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("delete from user where userID=?");) {
+            try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("update user set isActive=0 where userID=?");) {
                 ps.setInt(1, userID);
                 int a = ps.executeUpdate();
-                try (PreparedStatement pstm = con.prepareStatement("SELECT * FROM user LIMIT ? OFFSET ?");) {
+                try (PreparedStatement pstm = con.prepareStatement("SELECT * FROM user where isActive<>0  LIMIT ? OFFSET ?");) {
                     pstm.setInt(1, ITEMS_PER_PAGE);
                     pstm.setInt(2, offset);
                     ResultSet rs = pstm.executeQuery();
                     List<User> userList = User.getUser(rs);
-                    if (userList.isEmpty()) {
-                        System.out.println("nothing herer");
-                    }
                     int totalUsers = getTotalUsers(con);
                     int totalPages = (int) Math.ceil((double) totalUsers / ITEMS_PER_PAGE);
                     request.setAttribute("totalPages", totalPages);
@@ -254,7 +251,7 @@ public class UserManagement extends HttpServlet {
                 Connection con;
                 PreparedStatement pstm;
                 ResultSet rs;
-                String sql = "SELECT * FROM user ORDER BY " + sort + " " + order + " LIMIT ? OFFSET ? ";
+                String sql = "SELECT * FROM user where isActive<>0 ORDER BY " + sort + " " + order + " LIMIT ? OFFSET ? ";
                 try {
                     con = DBContext.getConnection();
                     pstm = con.prepareStatement(sql);
@@ -273,7 +270,7 @@ public class UserManagement extends HttpServlet {
                 return;
             }
 
-            String sql = "SELECT * FROM user WHERE username LIKE ?";
+            String sql = "SELECT * FROM user WHERE username LIKE ? and isActive<>0";
             sql += "ORDER BY " + sort + " " + order;
             ResultSet rs;
             try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
@@ -290,7 +287,7 @@ public class UserManagement extends HttpServlet {
             }
         } else {
 
-            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM user order by username asc LIMIT ? OFFSET ? ");) {
+            try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM user where isActive<>0 order by username asc LIMIT ? OFFSET ? ");) {
                 pstm.setInt(1, ITEMS_PER_PAGE);
                 pstm.setInt(2, offset);
                 ResultSet rs = pstm.executeQuery();

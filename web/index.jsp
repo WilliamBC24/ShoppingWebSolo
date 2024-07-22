@@ -16,7 +16,7 @@
     </head>
     <body>
        <script type="text/javascript">
-        window.location.href = "${pageContext.request.contextPath}/JSP/FrontPage/index.jsp";
+        window.location.href = "${pageContext.request.contextPath}/Homepage";
     </script>
     </body>
 </html>

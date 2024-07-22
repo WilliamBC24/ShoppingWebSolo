@@ -75,7 +75,7 @@ public class ProductManagement extends HttpServlet {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if ("editing".equals(action)) {
-            String UPLOAD_DIR = request.getServletContext().getRealPath("img/productImg");;
+            String UPLOAD_DIR = getServletContext().getRealPath("img/productImg");;
             String STORE = "http://localhost:8080/stbcStore/img/productImg/";
 
             HttpSession sesh = request.getSession();
@@ -283,7 +283,7 @@ public class ProductManagement extends HttpServlet {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if ("add".equals(action)) {
-            String UPLOAD_DIR = request.getServletContext().getRealPath("img/productImg");;
+            String UPLOAD_DIR = getServletContext().getRealPath("img/productImg");;
             String STORE = "http://localhost:8080/stbcStore/img/productImg/";
 
             String title = request.getParameter("title");
@@ -395,6 +395,16 @@ public class ProductManagement extends HttpServlet {
                 request.setAttribute("totalPages", totalPages);
                 request.setAttribute("feedbackList", feedbackList);
                 request.getRequestDispatcher("JSP/Dashboard/productfeedback.jsp").forward(request, response);
+            }catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else if("deleteFeedback".equals(action)){
+            String feedbackID=request.getParameter("feedbackID");
+            String productName=request.getParameter("productName");
+            try(Connection con=DBContext.getConnection();PreparedStatement ps=con.prepareStatement("delete from feedback where feedbackID=?")){
+                ps.setString(1,feedbackID);
+                ps.executeUpdate();
+                request.getRequestDispatcher("ProductManagement?action=feedback&productName="+productName).forward(request, response);
             }catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }

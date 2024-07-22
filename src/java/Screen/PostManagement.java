@@ -38,8 +38,9 @@ public class PostManagement extends HttpServlet {
         int offset = (currentPage - 1) * ITEMS_PER_PAGE;
         request.setAttribute("currentPage", currentPage);
         String action = request.getParameter("action");
-        String post = request.getParameter("post");
         if ("delete".equals(action)) {
+            String post = request.getParameter("postID");
+            System.out.println(post);
             try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement("delete from post where postID=?");) {
                 ps.setString(1, post);
                 int a = ps.executeUpdate();
@@ -76,7 +77,7 @@ public class PostManagement extends HttpServlet {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if ("editing".equals(action)) {
-            String UPLOAD_DIR = request.getServletContext().getRealPath("img/postImg");;
+            String UPLOAD_DIR = getServletContext().getRealPath("img/postImg");;
             String STORE = "http://localhost:8080/stbcStore/img/postImg/";
 
             HttpSession sesh = request.getSession();
@@ -142,14 +143,18 @@ public class PostManagement extends HttpServlet {
                 fields.add("postImg = ?");
                 values.add(filePath);
             }
-            
+            Date currentDate = Date.valueOf(LocalDate.now());
+
             fields.add("category = ?");
             values.add(category);
-            
+            fields.add("updatedDate = ?");
+            values.add(currentDate);
+
             if (!fields.isEmpty()) {
                 try {
                     String sql = "UPDATE post SET " + String.join(", ", fields) + " WHERE postID = ?";
                     values.add(postID);
+                    
                     Connection con = DBContext.getConnection();
                     PreparedStatement ps = con.prepareStatement(sql);
                     for (int i = 0; i < values.size(); i++) {
@@ -175,7 +180,7 @@ public class PostManagement extends HttpServlet {
             request.setAttribute("editSuccess", "Update Success");
             request.getRequestDispatcher("JSP/Dashboard/editpost.jsp").forward(request, response);
         } else if ("add".equals(action)) {
-            String UPLOAD_DIR = request.getServletContext().getRealPath("img/postImg");;
+            String UPLOAD_DIR = getServletContext().getRealPath("img/postImg");;
             String STORE = "http://localhost:8080/stbcStore/img/postImg/";
             String title = request.getParameter("title");
             String detail = request.getParameter("detail");
@@ -194,6 +199,7 @@ public class PostManagement extends HttpServlet {
                     || filePart == null || filePart.getSize() == 0) {
                 request.setAttribute("addError", "Fields shouldn't be empty");
                 request.getRequestDispatcher("JSP/Dashboard/addpost.jsp").forward(request, response);
+                return;
             }
             if (!fileName.toLowerCase().endsWith(".png") && !fileName.toLowerCase().endsWith(".jpg") && !fileName.toLowerCase().endsWith(".jpeg")) {
                 request.setAttribute("addError", "We only accept .png,.jpg or .jpeg");

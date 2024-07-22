@@ -30,7 +30,7 @@ public class AvatarChangeUser extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UPLOAD_DIR = request.getServletContext().getRealPath("img");
+        UPLOAD_DIR = getServletContext().getRealPath("img");
         HttpSession sesh = request.getSession();
         Part filePart = request.getPart("file");
         String fileName = getFileName(filePart);

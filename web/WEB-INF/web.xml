@@ -118,16 +118,28 @@
         <servlet-class>Screen.CustomerSupport</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ProductListing</servlet-name>
-        <servlet-class>Screen.ProductListing</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Homepage</servlet-name>
         <servlet-class>Screen.Homepage</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PostListing</servlet-name>
         <servlet-class>Screen.PostListing</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductListing</servlet-name>
+        <servlet-class>Screen.ProductListing</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDetail</servlet-name>
+        <servlet-class>Screen.ProductDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CartManager</servlet-name>
+        <servlet-class>Screen.CartManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>setOrder</servlet-name>
+        <servlet-class>Screen.setOrder</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ConnectionTest</servlet-name>
@@ -222,15 +234,35 @@
         <url-pattern>/CustomerSupport</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProductListing</servlet-name>
-        <url-pattern>/ProductListing</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/Homepage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostListing</servlet-name>
         <url-pattern>/PostListing</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ajaxServlet</servlet-name>
+        <url-pattern>/vnpayajax</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ajaxServlet</servlet-name>
+        <servlet-class>VNPay.ajaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductListing</servlet-name>
+        <url-pattern>/ProductListing</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDetail</servlet-name>
+        <url-pattern>/ProductDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartManager</servlet-name>
+        <url-pattern>/CartManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>setOrder</servlet-name>
+        <url-pattern>/setOrder</url-pattern>
     </servlet-mapping>
 </web-app>

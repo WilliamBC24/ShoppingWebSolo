@@ -24,10 +24,10 @@ public class Homepage extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         try(Connection con=DBContext.getConnection()){
-            PreparedStatement getBanner=con.prepareStatement("select * from product order by numbersSold desc limit 3");
+            PreparedStatement getBanner=con.prepareStatement("select * from product where isActive<>0 order by numbersSold desc limit 3");
             ResultSet theBanners=getBanner.executeQuery();
             List<Product> banners=Product.getProduct(theBanners);
-            PreparedStatement getProduct=con.prepareStatement("select * from product order by numbersSold desc limit 8 offset 3");
+            PreparedStatement getProduct=con.prepareStatement("select * from product where isActive<>0 order by numbersSold desc limit 8 offset 3");
             ResultSet theProducts=getProduct.executeQuery();
             List<Product> products=Product.getProduct(theProducts);
             PreparedStatement getPost=con.prepareStatement("select * from post order by updatedDate desc limit 8");

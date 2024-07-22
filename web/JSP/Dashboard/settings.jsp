@@ -16,7 +16,6 @@
                     <jsp:include page="overview.jsp" />
                     <div class="form-section">
                         <h2>Settings</h2>
-                        <p>The title i guess</p>
                         <c:if test="${not empty settingsError}">
                             <div class="form-alert">
 

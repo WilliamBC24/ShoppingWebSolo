@@ -8,6 +8,7 @@
     <ul>
         <li onclick="window.location.href = '${pageContext.request.contextPath}/ProfileManagement'">Profile</li>
         <li onclick="window.location.href = '${pageContext.request.contextPath}/MyOrders'">My Orders</li>
+        <li onclick="window.location.href = '${pageContext.request.contextPath}/CartManager'">Cart</li>
         
         <c:if test="${loggedinuser.accessLevel eq '2'||loggedinuser.accessLevel eq '3'}"> 
             <li onclick="window.location.href = '${pageContext.request.contextPath}/ProductManagement'">Product</li>

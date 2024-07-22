@@ -40,7 +40,7 @@ public class Statistics extends HttpServlet {
     }
 
     private String fetchTotalSalesFromDB(Connection con) {
-        String sql = "SELECT FORMAT(SUM((priceOut * numbersSold) - (priceIn * numbersSold)), 2) AS totalProfit FROM Product;";
+        String sql = "SELECT FORMAT(SUM((priceOut * numbersSold) - (priceIn * quantityInStock)), 2) AS totalProfit FROM Product;";
         try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getString(1);

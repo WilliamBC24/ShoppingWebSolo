@@ -48,6 +48,15 @@ public class Login extends HttpServlet {
                     if (storedPass.equals(PassHash.hashPass(password, salt))) {
                         User user = new User();
                         user.summonUser(rs);
+                        //select count  from cart where userID=this user id
+                        try (PreparedStatement cartCount = connection.prepareStatement("select count(*) as count from cart where userID=?")) {
+                            cartCount.setInt(1, user.getUserID());
+                            try (ResultSet cartCountResult = cartCount.executeQuery()) {
+                                if (cartCountResult.next()) {
+                                    session.setAttribute("itemincart", cartCountResult.getInt("count"));
+                                }
+                            }
+                        }
                         session.setAttribute("loggedinuser", user);
                         request.getRequestDispatcher(INDEX).forward(request, response);
                     } else {

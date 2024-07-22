@@ -21,6 +21,8 @@
         <!-- Tweaks for older IEs-->
         <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+        
+        <script src="https://kit.fontawesome.com/64d58efce2.js"></script>
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -33,58 +35,7 @@
         <header>
             <!-- header inner -->
             <div class="header">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
-                            <div class="full">
-                                <div class="center-desk">
-                                    <div class="logo">
-                                        <a href="${pageContext.request.contextPath}/Homepage"><img src="${pageContext.request.contextPath}/JSP/FrontPage/images/logo.png" alt="#" /></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                            <nav class="navigation navbar navbar-expand-md navbar-dark ">
-                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
-                                <div class="collapse navbar-collapse" id="navbarsExample04">
-                                    <ul class="navbar-nav mr-auto">
-                                        <li class="nav-item ">
-                                            <a class="nav-link" href="${pageContext.request.contextPath}/Homepage">Home</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="${pageContext.request.contextPath}/ProductListing">Our Products</a>
-                                        </li>
-                                        <li class="nav-item active">
-                                            <a class="nav-link" href="${pageContext.request.contextPath}/PostListing">Our Posts</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="${pageContext.request.contextPath}/JSP/FrontPage/contact.jsp">Contact Us</a>
-                                        </li>
-                                        <c:if test="${empty loggedinuser}">
-                                            <li class="nav-item d_none login_btn">
-                                                <a class="nav-link" href="${pageContext.request.contextPath}/Login">Login</a>
-                                            </li>
-                                            <li class="nav-item d_none">
-                                                <a class="nav-link" href="${pageContext.request.contextPath}/JSP/Register/register.jsp">Register</a>
-                                            </li>
-                                        </c:if>
-                                        <c:if test="${not empty sessionScope.loggedinuser}">
-                                            <li class="nav-item d_none">
-                                                <a class="nav-link" href="#">Cart</a>
-                                            </li>
-                                            <li class="nav-item d_none">
-                                                <a class="nav-link" href="${pageContext.request.contextPath}/LogOut">Logout</a>
-                                            </li>
-                                        </c:if>
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
+                <jsp:include page="navbar.jsp" />
             </div>
         </header>
         <!-- end header inner -->
@@ -95,9 +46,8 @@
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
                         <div class="titlepage">
-                            <h2>Our Glasses</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labor
-                                e et dolore magna aliqua. Ut enim ad minim veniam, qui
+                            <h2>New Posts</h2>
+                            <p>Get the latest news and updates from our website.
                             </p>
                         </div>
                     </div>
@@ -107,15 +57,52 @@
                 <div class="row">
                     <c:forEach var="post" items="${postList}">
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                            <div class="glasses_box">
-                                <figure><img src="${post.postImg}" alt="#"/></figure>
+                            <div class="glasses_box" onclick="window.location.href='http://localhost:8080/stbcStore/PostListing?post=${post.postID}&action=details'">
+                                <figure><img style="width:300px;height:300px" src="${post.postImg}" alt="#"/></figure>
                                 <p>${post.title}</p>
                             </div>
                         </div>
                     </c:forEach>
-                    <div class="col-md-12">
-                        <a class="read_more" href="#">Read More</a>
-                    </div>
+                </div>
+                <div class="pagination">
+                    <c:if test="${currentPage != 1}">
+                        <button onclick="window.location.href = 'http://localhost:8080/stbcStore/PostListing?page=${currentPage-1}'">
+                            <i class="fas fa-angle-left"></i>
+                        </button>
+                    </c:if>
+                    <c:if test="${currentPage == 1}">
+                        <button>
+                            <i class="fas fa-angle-left"></i>
+                        </button>
+                    </c:if>
+                    <button>${currentPage}</button>
+                    <c:if test="${currentPage != totalPages}">
+                        <button onclick="window.location.href = 'http://localhost:8080/stbcStore/PostListing?page=${currentPage+1}'">
+                            <i class="fas fa-angle-right"></i>
+                        </button>
+                    </c:if>
+                    <c:if test="${currentPage == totalPages}">
+                        <button>
+                            <i class="fas fa-angle-right"></i>
+                        </button>
+                    </c:if>
+                    <style>
+                        .pagination {
+                            display: flex;
+                            justify-content: center;
+    text-align: center;
+    button {
+        padding: 10px 15px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+        &:hover {
+            background-color: #f5f5f5;
+        }
+    }
+}
+                    </style>
                 </div>
             </div>
         </div>
