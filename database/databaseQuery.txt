@@ -41,6 +41,10 @@ CREATE TABLE `User` (
     FOREIGN KEY (`accessLevel`) REFERENCES AccessLevel(`accessLevelID`)
 );
 
+INSERT INTO user(username, password, salt, email, gender, phonenumber, avatarImg, firstname, lastname, verifyToken, verifiedStatus, accessLevel, googleID, OAuthProvider)
+VALUES ('john_doe', 'password123', 'saltValue', 'john.doe@example.com', 'Male', '1234567890', 'http://localhost:8080/stbcStore/img/test.png', 'John', 'Doe', 'verifyToken123', 3, 'user', 'google123', 'Google');
+
+
 -- Create the UserPaymentInfo table
 CREATE TABLE UserPaymentInfo (
     paymentID INT NOT NULL AUTO_INCREMENT,
@@ -73,6 +77,14 @@ CREATE TABLE Post (
     FOREIGN KEY (userID) REFERENCES `User`(userID),
     FOREIGN KEY (category) REFERENCES PostCategoryTemplate(categoryID)
 );
+INSERT INTO Post (userID, updatedDate, title, detail, category, postImg) 
+VALUES 
+(1, '2024-07-23', 'Summer Sale Announcement', 'Get ready for our biggest summer sale!', '0', 'http://localhost:8080/stbcStore/img/postImg/test.png'),
+(1, '2024-07-23', 'New Product Launch', 'We are excited to launch our new product line.', '1', 'http://localhost:8080/stbcStore/img/postImg/test.png'),
+(1, '2024-07-23', 'Holiday Discount Offers', 'Exclusive holiday discounts for our loyal customers.', '1', 'http://localhost:8080/stbcStore/img/postImg/test.png'),
+(1, '2024-07-23', 'Winter Collection Preview', 'Preview of our upcoming winter collection.', '0', 'postImg'),
+(1, '2024-07-23', 'Flash Sale Event', 'Don\'t miss our 24-hour flash sale event.', '1', 'postImg');
+
 
 -- Create the Product table
 CREATE TABLE Product (
@@ -89,6 +101,15 @@ CREATE TABLE Product (
     category INT NOT NULL,
     isActive int not null default 1,
 );
+INSERT INTO product (title, priceIn, priceOut, numbersSold, details, quantityInStock, productImg, gender, season, category) 
+VALUES ('Summer T-Shirt', 10.50, 15.99, 0, 'A cool and comfortable summer t-shirt.', 100, 'http://localhost:8080/stbcStore/img/productImg/test.png', '0', '2', '4'),
+       ('Winter T-Shirt', 10.50, 15.99, 0, 'A warm and comfortable winter t-shirt.', 100, 'http://localhost:8080/stbcStore/img/productImg/test.png', '0', '3', '4'),
+       ('Summer Shorts', 10.50, 15.99, 0, 'A cool and comfortable summer shorts.', 100, 'http://localhost:8080/stbcStore/img/productImg/test.png', '0', '2', '5'),
+       ('Spring T-Shirt', 11.00, 16.50, 0, 'A light and comfortable spring t-shirt.', 120, 'http://localhost:8080/stbcStore/img/productImg/test.png', '0', '2', '4'),
+       ('Autumn T-Shirt', 12.00, 17.50, 0, 'A cozy and stylish autumn t-shirt.', 110, 'http://localhost:8080/stbcStore/img/productImg/test.png', '0', '3', '4'),
+       ('Spring Shorts', 11.00, 16.50, 0, 'Light and comfortable spring shorts.', 120, 'http://localhost:8080/stbcStore/img/productImg/test.png', '0', '2', '5'),
+       ('Winter Shorts', 12.00, 17.50, 0, 'Warm and comfortable winter shorts.', 110, 'http://localhost:8080/stbcStore/img/productImg/test.png', '0', '3', '5');
+
 
 -- Create the ProductCategoryTemplate table and insert initial data
 CREATE TABLE ProductCategoryTemplate (
