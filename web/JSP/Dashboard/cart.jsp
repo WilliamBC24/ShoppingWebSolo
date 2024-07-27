@@ -41,7 +41,7 @@
                                 <c:forEach var="cart" items="${cartList}" varStatus="loop">
                                     <tr>
                                         <td width="400px">${productList[loop.index].title}</td>
-                                        <td width="400px"><img width="100px" src="${productList[loop.index].productImg}" alt=""></td>
+                                        <td width="400px"><img width="100px" src="${productList[loop.index].productImg}" alt="" onclick="window.location.href='http://localhost:8080/stbcStore/ProductListing?product=${productList[loop.index].productID}&action=details'"></td>
                                         <td width="400px">${cart.quantity}</td>
                                         <td width="300px">$${cart.quantity * productList[loop.index].priceOut}</td>
                                         <td width="200px" style="display:flex; justify-content: space-around;">

@@ -28,7 +28,6 @@ public class OAuth extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html");
         String error = request.getParameter("error");
         if ("access_denied".equals(error)) {
             request.getRequestDispatcher("JSP/Login/login.jsp").forward(request, response);
@@ -60,7 +59,7 @@ public class OAuth extends HttpServlet {
                         userz.summonUser(rszz);
                     }
                     session.setAttribute("loggedinuser", userz);
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    request.getRequestDispatcher("Homepage").forward(request, response);
                 } else {
                     request.setAttribute("loginstatus", "There is already an account with this email");
                     request.getRequestDispatcher("JSP/Login/login.jsp").forward(request, response);

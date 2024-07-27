@@ -47,7 +47,7 @@
                                 <div class="carousel-caption">
                                     <div class="text-bg">
                                         <h1> <span>Popular <br></span>Now</h1>
-                                        <figure><img style="width: 500px;height:500px" src="${banner.productImg}" alt="#"/></figure>
+                                        <figure><img style="width: 500px;height:500px" src="${banner.productImg}" onclick="window.location.href='http://localhost:8080/stbcStore/ProductListing?product=${banner.productID}&action=details'" alt="#"/></figure>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
                 <div class="row">
                     <c:forEach var="post" items="${posts}">
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                        <div class="glasses_box">
+                        <div class="glasses_box" onclick="window.location.href='http://localhost:8080/stbcStore/PostListing?post=${post.postID}&action=details'">
                             <figure><img style="width:400px;height:400px" src="${post.postImg}" alt="#"/></figure>
                             <p>${post.title}</p>
                         </div>
