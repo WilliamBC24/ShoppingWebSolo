@@ -1,4 +1,4 @@
-package Manager;
+package ObjectModel;
 
 
 public class OAuthUser {

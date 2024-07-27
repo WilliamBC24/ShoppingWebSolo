@@ -38,6 +38,47 @@
                 <div class="buy-buttonsx">
                     <form action="${pageContext.request.contextPath}/ProductDetail">
                         <input type="hidden" name="productID" value="${product.productID}">
+                        <div class="quantity-container">
+                            <button type="button" class="quantity-button" id="decreaseButton">-</button>
+                            <input type="number" id="quantityInput" name="quantity" value="1" min="1" max="${product.quantityInStock}">
+                            <button type="button" class="quantity-button" id="increaseButton">+</button>
+                        </div>
+                        
+                        <script>
+                            document.getElementById('increaseButton').addEventListener('click', function () {
+    let input = document.getElementById('quantityInput');
+    let value = parseInt(input.value, 10);
+    let max = parseInt(input.max, 10);
+
+    if (value < max) {
+        input.value = value + 1;
+    }
+});
+
+document.getElementById('decreaseButton').addEventListener('click', function () {
+    let input = document.getElementById('quantityInput');
+    let value = parseInt(input.value, 10);
+    let min = parseInt(input.min, 10);
+
+    if (value > min) {
+        input.value = value - 1;
+    }
+});
+
+document.getElementById('quantityInput').addEventListener('input', function () {
+    let input = this;
+    let value = parseInt(input.value, 10);
+    let min = parseInt(input.min, 10);
+    let max = parseInt(input.max, 10);
+
+    if (value > max) {
+        input.value = max;
+    } else if (value < min) {
+        input.value = min;
+    }
+});
+
+                        </script>
                         <button class="button button-secondaryx" type="submit" name="action" value="add"  style="background:none;">
                             <img src="${pageContext.request.contextPath}/JSP/FrontPage/images/add.svg" width="30px" height="50px" alt="add to cart">
                         </button>

@@ -3,12 +3,16 @@ package Screen;
 import Manager.DBContext;
 import ObjectModel.Post;
 import ObjectModel.Product;
+import ObjectModel.User;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +27,22 @@ public class Homepage extends HttpServlet {
    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        HttpSession sesh=request.getSession();
+        User user=(User)sesh.getAttribute("loggedinuser");
+        int userID=0;
+        if(user!=null){
+            userID=user.getUserID();
+            try (Connection con=DBContext.getConnection();PreparedStatement cartCount = con.prepareStatement("select count(*) as count from cart where userID=?")) {
+                cartCount.setInt(1, userID);
+                try (ResultSet cartCountResult = cartCount.executeQuery()) {
+                    if (cartCountResult.next()) {
+                        sesh.setAttribute("itemincart", cartCountResult.getInt("count"));
+                    }
+                }
+            }catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         try(Connection con=DBContext.getConnection()){
             PreparedStatement getBanner=con.prepareStatement("select * from product where isActive<>0 order by numbersSold desc limit 3");
             ResultSet theBanners=getBanner.executeQuery();

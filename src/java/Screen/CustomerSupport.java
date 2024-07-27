@@ -20,9 +20,9 @@ public class CustomerSupport extends HttpServlet {
         if(name==null&&name.isEmpty()||email==null&&email.isEmpty()||phone==null&&phone.isEmpty()||message==null&&message.isEmpty()){
             request.getRequestDispatcher("JSP/FrontPage/contact.jsp").forward(request, response);
         }
+        request.getRequestDispatcher("JSP/FrontPage/contact.jsp").forward(request, response);
         Email mailer=new Email();
         mailer.sendSupportEmail(name,email,phone,message);
-        request.getRequestDispatcher("JSP/FrontPage/contact.jsp").forward(request, response);
     } 
 
     

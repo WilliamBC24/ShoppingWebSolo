@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpSession;
 public class LogOut extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        SessionVerification.checkSession(request, response);
         HttpSession sesh=request.getSession();
         sesh.removeAttribute("loggedinuser");
         request.getRequestDispatcher("Homepage").forward(request,response);

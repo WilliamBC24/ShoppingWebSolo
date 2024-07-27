@@ -107,6 +107,33 @@ public class CartManager extends HttpServlet {
             }catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else if("remove".equals(action)){
+            String productID=request.getParameter("productID");
+            try (Connection con=DBContext.getConnection();PreparedStatement pstm1 = con.prepareStatement("SELECT quantity FROM cart WHERE userID = ? AND productID = ?");) {
+                pstm1.setInt(1, userID);
+                pstm1.setString(2, productID);
+                ResultSet rs1 = pstm1.executeQuery(); 
+                if(rs1.next()){
+                    String quantity=rs1.getString("quantity");
+                    try (PreparedStatement pstm2 = con.prepareStatement("delete from cart WHERE userID = ? AND productID = ?");) {
+                        pstm2.setInt(1, userID);
+                        pstm2.setString(2, productID);
+                        pstm2.executeUpdate();
+                        try (PreparedStatement pstm3 = con.prepareStatement("UPDATE product SET quantityInStock = quantityInStock + ? WHERE productID = ?");) {
+                            pstm3.setString(1, quantity);
+                            pstm3.setString(2, productID);
+                            pstm3.executeUpdate();
+                        }
+                        try(PreparedStatement pstm4=con.prepareStatement("DELETE FROM cart WHERE userID=? and quantity=0")){
+                            pstm4.setInt(1, userID);
+                            pstm4.executeUpdate();
+                        }
+                    }
+                }
+                response.sendRedirect("CartManager");
+            }catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }else{
             try(Connection con=DBContext.getConnection();PreparedStatement ps=con.prepareStatement("select * from cart where userid=? and quantity>0")){
                 ps.setInt(1, userID);

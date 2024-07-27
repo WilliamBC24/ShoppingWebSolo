@@ -47,7 +47,7 @@ public class SessionVerification {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("loggedinuser");
         if (user != null) {
-            request.getRequestDispatcher("JSP/FrontPage/index.jsp").forward(request, response);
+            request.getRequestDispatcher("Homepage").forward(request, response);
         }
     }
 }

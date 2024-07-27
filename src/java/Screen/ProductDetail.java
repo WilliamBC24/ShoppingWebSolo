@@ -35,6 +35,7 @@ public class ProductDetail extends HttpServlet {
         if("add".equals(action)){
             HttpSession sesh=request.getSession();
             String productID=request.getParameter("productID");
+            String amount=request.getParameter("quantity");
             User user=(User)sesh.getAttribute("loggedinuser");
             if(user==null){
                 request.getRequestDispatcher("JSP/Login/login.jsp").forward(request, response);
@@ -52,22 +53,26 @@ public class ProductDetail extends HttpServlet {
                             pstm1.setString(2, productID);
                             ResultSet rs1 = pstm1.executeQuery(); 
                             if(rs1.next()){
-                                try (PreparedStatement pstm2 = con.prepareStatement("UPDATE cart SET quantity = quantity + 1 WHERE userID = ? AND productID = ?");) {
-                                    pstm2.setInt(1, userID);
-                                    pstm2.setString(2, productID);
+                                try (PreparedStatement pstm2 = con.prepareStatement("UPDATE cart SET quantity = quantity + ? WHERE userID = ? AND productID = ?");) {
+                                    pstm2.setInt(1, Integer.parseInt(amount));
+                                    pstm2.setInt(2, userID);
+                                    pstm2.setString(3, productID);
                                     pstm2.executeUpdate();
-                                    try (PreparedStatement pstm3 = con.prepareStatement("UPDATE product SET quantityInStock = quantityInStock - 1 WHERE productID = ?");) {
-                                        pstm3.setString(1, productID);
+                                    try (PreparedStatement pstm3 = con.prepareStatement("UPDATE product SET quantityInStock = quantityInStock - ? WHERE productID = ?");) {
+                                        pstm3.setString(1, amount);
+                                        pstm3.setString(2, productID);
                                         pstm3.executeUpdate();
                                     }
                                 }
                             }else{
-                                try (PreparedStatement pstm2 = con.prepareStatement("INSERT INTO cart (userID, productID,quantity) VALUES (?, ?, 1)");) {
+                                try (PreparedStatement pstm2 = con.prepareStatement("INSERT INTO cart (userID, productID,quantity) VALUES (?, ?, ?)");) {
                                     pstm2.setInt(1, userID);
                                     pstm2.setString(2, productID);
+                                    pstm2.setString(3, amount);
                                     pstm2.executeUpdate();
-                                    try (PreparedStatement pstm3 = con.prepareStatement("UPDATE product SET quantityInStock = quantityInStock - 1 WHERE productID = ?");) {
-                                        pstm3.setString(1, productID);
+                                    try (PreparedStatement pstm3 = con.prepareStatement("UPDATE product SET quantityInStock = quantityInStock - ? WHERE productID = ?");) {
+                                        pstm3.setString(1, amount);
+                                        pstm3.setString(2, productID);
                                         pstm3.executeUpdate();
                                     }
                                 }

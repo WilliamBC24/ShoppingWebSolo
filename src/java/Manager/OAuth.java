@@ -2,6 +2,7 @@ package Manager;
 
 import Screen.Login;
 import Manager.DBContext;
+import ObjectModel.OAuthUser;
 import ObjectModel.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

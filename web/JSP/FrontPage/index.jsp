@@ -88,7 +88,7 @@
                         </div>
                     </c:forEach>
                     <div class="col-md-12">
-                        <a class="read_more" href="${pageContext.request.contextPath}/ProductListing">Read More</a>
+                        <a class="read_more" href="${pageContext.request.contextPath}/ProductListing">See More</a>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@ package Screen;
 
 import Manager.DBContext;
 import Manager.Email;
-import Manager.OAuthUser;
+import ObjectModel.OAuthUser;
 import ObjectModel.User;
 import Security.SessionVerification;
 import java.io.IOException;
@@ -70,8 +70,6 @@ public class OAuthLogin extends HttpServlet {
             add.setString(11, "google");
             int success = add.executeUpdate();
             if (success > 0) {
-                Email sendEmail = new Email();
-                sendEmail.welcomeEmail(oauthEmail);
                 request.setAttribute(LOGIN_STATUS, "oauth success");
                 PreparedStatement news=connection.prepareStatement("select * from user where username=?");
                 news.setString(1,username);
@@ -82,6 +80,8 @@ public class OAuthLogin extends HttpServlet {
                     session.setAttribute("loggedinuser",newUser);
                 }
                 request.getRequestDispatcher(DASH).forward(request, response);
+                Email sendEmail = new Email();
+                sendEmail.welcomeEmail(oauthEmail);
             } else {
                 request.setAttribute(LOGIN_STATUS, "An error occured. Please try again later");
                 request.getRequestDispatcher(LOGIN).forward(request, response);

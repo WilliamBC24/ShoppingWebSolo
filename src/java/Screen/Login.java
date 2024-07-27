@@ -134,7 +134,7 @@ public class Login extends HttpServlet {
                 pstm.setString(14, "none");
                 int addSuccess = pstm.executeUpdate();
                 if (addSuccess > 0) {
-                    request.getRequestDispatcher("Homepage").forward(request,response);
+                    request.getRequestDispatcher("JSP/Login/login.jsp").forward(request,response);
                     Email sendEmail = new Email();
                     sendEmail.welcomeEmail(email);
                 } else {

@@ -40,11 +40,11 @@
                             <tbody>
                                 <c:forEach var="cart" items="${cartList}" varStatus="loop">
                                     <tr>
-                                        <td>${productList[loop.index].title}</td>
-                                        <td><img width="100px" src="${productList[loop.index].productImg}" alt=""></td>
-                                        <td>${cart.quantity}</td>
-                                        <td>$${cart.quantity * productList[loop.index].priceOut}</td>
-                                        <td style="display:flex; justify-content: space-around;">
+                                        <td width="400px">${productList[loop.index].title}</td>
+                                        <td width="400px"><img width="100px" src="${productList[loop.index].productImg}" alt=""></td>
+                                        <td width="400px">${cart.quantity}</td>
+                                        <td width="300px">$${cart.quantity * productList[loop.index].priceOut}</td>
+                                        <td width="200px" style="display:flex; justify-content: space-around;">
                                             <form action="${pageContext.request.contextPath}/CartManager" method="post">
                                                 <input type="hidden" name="productID" value="${productList[loop.index].productID}">
                                                 <button type="submit" name="action" value="minus">
@@ -55,6 +55,12 @@
                                                 <input type="hidden" name="productID" value="${productList[loop.index].productID}">
                                                 <button type="submit" name="action" value="plus">
                                                     <i class="fas fa-plus"></i>
+                                                </button>
+                                            </form>
+                                            <form action="${pageContext.request.contextPath}/CartManager" method="post">
+                                                <input type="hidden" name="productID" value="${productList[loop.index].productID}">
+                                                <button type="submit" name="action" value="remove">
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
                                         </td>
