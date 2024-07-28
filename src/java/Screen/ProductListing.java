@@ -1,6 +1,7 @@
 package Screen;
 
 import Manager.DBContext;
+import ObjectModel.Feedback;
 import ObjectModel.Product;
 import ObjectModel.User;
 
@@ -106,21 +107,59 @@ public class ProductListing extends HttpServlet {
                     request.setAttribute("product", product);
                     PreparedStatement canReview=null;
                     if(!username.equals("")){
-                    canReview=con.prepareStatement("SELECT od.productName FROM orderdetails od INNER JOIN orders o ON od.orderID = o.orderID INNER JOIN product p ON od.productName = p.title WHERE o.username = ? AND p.productID = ?;");
+                    canReview=con.prepareStatement("SELECT od.productName,od.orderID FROM orderdetails od INNER JOIN orders o ON od.orderID = o.orderID INNER JOIN product p ON od.productName = p.title WHERE o.username = ? AND p.productID = ?;");
                     canReview.setString(1,username);
                     canReview.setString(2,productID);
                     ResultSet yesReview=canReview.executeQuery();
                     if (yesReview.next()) {
+                        
+                        PreparedStatement checkReview=con.prepareStatement("SELECT * FROM feedback WHERE productName = ? AND username = ?");
+                        checkReview.setString(1, product.getTitle());
+                        checkReview.setString(2, username);
+                        ResultSet rs1 = checkReview.executeQuery();
+                        if(rs1.next()){
+                            request.setAttribute("canReview", "no");
+                        }else{
                         request.setAttribute("canReview", "yes");
+                        }
                     } else {
                         request.setAttribute("canReview", "no"); 
                     }
                     }else{
                         request.setAttribute("canReview", "no");
                     }
-                    
+                    PreparedStatement getName=con.prepareStatement("SELECT title FROM product WHERE productID = ?");
+                getName.setString(1, productID);
+                ResultSet rs1 = getName.executeQuery();
+                String title="";
+                if(rs1.next()){
+                    title=rs1.getString("title");
+                }
+                PreparedStatement getFeedback=con.prepareStatement("SELECT * FROM feedback WHERE productName = ?");
+                getFeedback.setString(1, title);
+                ResultSet rs2 = getFeedback.executeQuery();
+                List<Feedback> feedbackList = Feedback.getFeedback(rs2);
+                request.setAttribute("feedbackList", feedbackList);
+                
                     request.getRequestDispatcher("JSP/FrontPage/productdetails.jsp").forward(request, response);
                 }
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else if("search".equals(action)){
+            String search=request.getParameter("search");
+            String sql = "SELECT * FROM product WHERE title LIKE ? and isActive <> 0 ";
+            System.out.println(sql);
+            ResultSet rs;
+            try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+                ps.setString(1, '%' + search + '%');
+                rs = ps.executeQuery();
+                List<Product> productList = Product.getProduct(rs);
+                int totalProducts = getTotalProductsSearch(con, search);
+                int totalPages = (int) Math.ceil((double) totalProducts / ITEMS_PER_PAGE);
+                request.setAttribute("totalPages", totalPages);
+                request.setAttribute("productList", productList);
+                request.getRequestDispatcher("JSP/FrontPage/product.jsp").forward(request, response);
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -141,7 +180,16 @@ public class ProductListing extends HttpServlet {
             }
         }
     } 
-
+    private int getTotalProductsSearch(Connection con, String search) throws SQLException {
+        try (PreparedStatement pstm = con.prepareStatement("SELECT count(*) FROM product WHERE title LIKE ? and isActive <> 0 ");) {
+            pstm.setString(1, '%' + search + '%');
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
     private int getTotalProducts(Connection con) throws SQLException {
         String countQuery = "SELECT COUNT(*) FROM product where isActive <> 0";
         try (PreparedStatement pstm = con.prepareStatement(countQuery); ResultSet rs = pstm.executeQuery()) {

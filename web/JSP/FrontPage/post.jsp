@@ -49,6 +49,12 @@
                             <h2>New Posts</h2>
                             <p>Get the latest news and updates from our website.
                             </p>
+                            <form action="${pageContext.request.contextPath}/PostListing" method="post" >
+                                <div style="display: flex;justify-content: center;">
+                                <input type="text" name="search" class="search-input" placeholder="Search for what you like">
+                                <button type="submit" name="action" value="search" style="font-size: 30px; margin-left: 10px;" class="fas fa-search"></button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

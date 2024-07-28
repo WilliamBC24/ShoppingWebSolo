@@ -25,10 +25,10 @@
     </div>
 
     <div class="containerx">
+        <h1>${post.title}</h1>
         <div class="product-detailsx">
-                <img src="${post.postImg}" alt="Product Image">
+                <img style="width: 400px;height: 400px;" src="${post.postImg}" alt="Product Image">
             <div class="product-infox">
-                <h1>${post.title}</h1>
                 <div class="product-descriptionx">
                     <p>${post.detail}</p>
                 </div>

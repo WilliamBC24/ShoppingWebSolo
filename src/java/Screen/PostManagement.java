@@ -114,7 +114,7 @@ public class PostManagement extends HttpServlet {
                 }
             }
             if (detail != null && !detail.isEmpty()) {
-                fields.add("details = ?");
+                fields.add("detail = ?");
                 values.add(detail);
             }
             

@@ -11,9 +11,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,6 +41,13 @@ public class OrderManagement extends HttpServlet {
             ps.setString(1, status);
             ps.setString(2, orderID);
             ps.executeUpdate();
+            if("2".equals(status)){
+                Date currentDate = Date.valueOf(LocalDate.now());
+                PreparedStatement ps2 = con.prepareStatement("update orders set receivedDate=? where orderID=?");
+                ps2.setDate(1, currentDate);
+                ps2.setString(2, orderID);
+                ps2.executeUpdate();
+            }
             try (PreparedStatement pstm = con.prepareStatement("SELECT * FROM orders LIMIT ? OFFSET ?");) {
 
                 pstm.setInt(1, ITEMS_PER_PAGE);

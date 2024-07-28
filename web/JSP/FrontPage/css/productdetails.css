@@ -137,3 +137,48 @@ body {
     border-right: none;
     height: 30px;
 }
+.search-input {
+    width: 200px;
+    height: 40px;
+    padding: 10px;
+    border-radius: 20px;
+    border: 2px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.search-input:focus {
+    border-color: #66afe9;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+}
+#starRating {
+    display: flex;
+    direction: row;
+}
+.star {
+    font-size: 2em;
+    color: lightgray;
+    cursor: pointer;
+}
+.star.selected {
+    color: gold;
+}.form-alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    p{
+        margin-bottom: 0;
+    }
+}
+.form-success {
+    background-color: #d4edda; 
+    color: #155724; 
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    p{
+        margin-bottom:0;
+    }
+}

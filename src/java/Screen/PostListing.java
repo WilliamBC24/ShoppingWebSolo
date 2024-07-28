@@ -49,6 +49,22 @@ public class PostListing extends HttpServlet {
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else if("search".equals(action)){
+            String search = request.getParameter("search");
+            String sql = "SELECT * FROM post WHERE title LIKE ?";
+            ResultSet rs;
+            try (Connection con = DBContext.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+                ps.setString(1, '%' + search + '%');
+                rs = ps.executeQuery();
+                List<Post> postList = Post.getPost(rs);
+                int totalPosts = getTotalPostsSearch(con, search);
+                int totalPages = (int) Math.ceil((double) totalPosts / ITEMS_PER_PAGE);
+                request.setAttribute("totalPages", totalPages);
+                request.setAttribute("postList", postList);
+                request.getRequestDispatcher("JSP/FrontPage/post.jsp").forward(request, response);
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }else{
             try (Connection con = DBContext.getConnection(); PreparedStatement pstm = con.prepareStatement("SELECT * FROM post ORDER BY updatedDate DESC LIMIT ? OFFSET ?");) {
                 pstm.setInt(1, ITEMS_PER_PAGE);
@@ -65,7 +81,16 @@ public class PostListing extends HttpServlet {
             }
         }
     } 
-
+    private int getTotalPostsSearch(Connection con, String search) throws SQLException {
+        try (PreparedStatement pstm = con.prepareStatement("SELECT count(*) FROM post WHERE title LIKE ?");) {
+            pstm.setString(1, '%' + search + '%');
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
     private int getTotalPosts(Connection con) throws SQLException {
         String countQuery = "SELECT COUNT(*) FROM post";
         try (PreparedStatement pstm = con.prepareStatement(countQuery); ResultSet rs = pstm.executeQuery()) {

@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/JSP/FrontPage/css/jquery.mCustomScrollbar.min.css">
         <!-- Tweaks for older IEs-->
         <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
         <script src="https://kit.fontawesome.com/64d58efce2.js"></script>
         <!--[if lt IE 9]>
@@ -46,8 +47,13 @@
                     <div class="col-md-10 offset-md-1">
                         <div class="titlepage">
                             <h2>Our Products</h2>
-                            <p>Classic, Timeless, Modern
-                            </p>
+                            <p>Classic, Timeless, Modern</p>
+                            <form action="${pageContext.request.contextPath}/ProductListing" method="post" >
+                                <div style="display: flex;justify-content: center;">
+                                <input type="text" name="search" class="search-input" placeholder="Search for what you like">
+                                <button type="submit" name="action" value="search" style="font-size: 30px; margin-left: 10px;" class="fas fa-search"></button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -90,10 +90,20 @@ document.getElementById('quantityInput').addEventListener('input', function () {
         <c:if test="${canReview eq 'yes'}">
             <div class="review-form">
                 <h2>Add a Review</h2>
-                <form action="#" method="POST" enctype="multipart/form-data">
+                <c:if test="${not empty editError}">
+                            <div class="form-alert">
+                                <p>${editError}</p>
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty editSuccess}">
+                            <div class="form-success">
+                                <p>${editSuccess}</p>
+                            </div>
+                        </c:if>
+                <form action="${pageContext.request.contextPath}/ProductDetail" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="reviewText">Review Text:</label>
-                        <textarea id="reviewText" name="reviewText" rows="4" required></textarea>
+                        <textarea id="reviewText" name="reviewText" rows="4" style="resize: none;" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="reviewImage">Upload Image:</label>
@@ -102,19 +112,41 @@ document.getElementById('quantityInput').addEventListener('input', function () {
                     <div class="form-group">
                         <label for="starRating">Star Rating:</label>
                         <div id="starRating">
-                            <!-- Star rating input can be implemented using JavaScript or a library like Font Awesome -->
-                            <!-- Example: -->
+                            <input type="radio" id="star1" name="star" value="1">
+                            <label for="star1">1</label>
+                            <input type="radio" id="star2" name="star" value="2">
+                            <label for="star2">2</label>
+                            <input type="radio" id="star3" name="star" value="3">
+                            <label for="star3">3</label>
+                            <input type="radio" id="star4" name="star" value="4">
+                            <label for="star4">4</label>
+                            <input type="radio" id="star5" name="star" value="5" checked>
+                            <label for="star5">5</label>
                             <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                        </div>
                     </div>
-                    <button type="submit" class="buttonx">Submit Review</button>
+
+        <input type="hidden" name="rating" id="ratingValue">
+                    <input type="hidden" name="title" value="${product.title}">
+                    <input type="hidden" name="productID" value="${product.productID}">
+                    <button type="submit" name="action" value="review" class="buttonx">Submit Review</button>
                 </form>
             </div>
         </c:if>
+        <div class="review-form">
+            <h2>Reviews</h2>
+            <c:forEach var="feedback" items="${feedbackList}">
+                                        <div class="review-form">
+                                            <h3 style="width:200px">${feedback.username}</h3>
+                                            <c:if test="${not empty feedback.attachedImg}">
+    <img src="${feedback.attachedImg}" alt="User Image" style="width:100px;height:100px">
+</c:if>
+                                        <h4 style="width:500px">${feedback.feedbackDetail}</h4>
+                                        <span style="width:350px"><c:forEach begin="1" end="${feedback.star}">
+                                                <i style="color:gold" class="fas fa-star star-icon"></i>
+                                            </c:forEach></span>
+                                        </div>
+            </c:forEach>
+        </div>
     </div>
 </body>
 </html>

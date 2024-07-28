@@ -892,4 +892,17 @@ ul.location_icon li a {
 .position_head .glasses,
 .shop {
      margin-bottom: 90px;
-}
+}.search-input {
+     width: 200px;
+     height: 40px;
+     padding: 10px;
+     border-radius: 20px;
+     border: 2px solid #ccc;
+     outline: none;
+     transition: border-color 0.3s;
+ }
+
+ .search-input:focus {
+     border-color: #66afe9;
+     box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+ }
