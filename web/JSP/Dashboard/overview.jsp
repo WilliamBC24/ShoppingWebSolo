@@ -39,12 +39,12 @@
 <div class="overview">
     <div class="overview-item">
         <img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/get.svg" alt="">
-        <h2>Total Profit</h2>
+        <h2>Total Product Profit</h2>
         <p>$<span id="totalSales">Loading...</span></p>
     </div>
     <div class="overview-item">
         <img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/out.svg" alt="">
-        <h2>Total Expenses</h2>
+        <h2>Total Product Expenses</h2>
         <p>$<span id="totalExpenses">Loading...</span></p>
     </div>
     <div class="overview-item">
