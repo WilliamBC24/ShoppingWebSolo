@@ -64,10 +64,6 @@
                                                 <input type="hidden" name="username" value="${user.userID}">
                                                 <button type="submit" name="action" value="edit"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/edit.svg" width="30px" height="30px" alt="edit"></button>
                                             </form>
-                                            <form action="UserManagement" method="post">
-                                                <input type="hidden" name="username" value="${user.userID}">
-                                                <button type="submit" name="action" value="delete"><img src="${pageContext.request.contextPath}/JSP/Dashboard/pic/delete.svg" width="30px" height="30px" alt="delete"></button>
-                                            </form>
                                         </td>
                                     </tr>
                                 </c:forEach>

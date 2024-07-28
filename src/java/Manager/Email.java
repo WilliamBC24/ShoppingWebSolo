@@ -22,7 +22,7 @@ public class Email {
             + "Special Offers: Don't miss out on our current promotions and discounts [link to offers page].\n"
             + "As a welcome gift, here’s a special discount just for you: [Discount Code]. Use it at checkout to enjoy 10% off your first purchase!\n"
             + "\n"
-            + "If you have any questions or need assistance, our customer support team is here to help. You can reach us at totallyrealsupportmail@gmai.com.\n"
+            + "If you have any questions or need assistance, our customer support team is here to help. You can reach us at sonbltse184773@fpt.edu.vn.\n"
             + "\n"
             + "Thank you for choosing stbcStore. Happy shopping!\n"
             + "\n"
