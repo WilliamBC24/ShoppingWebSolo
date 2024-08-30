@@ -9,7 +9,7 @@ import java.util.Properties;
 public class Email {
 
     private final String USERNAME = "sonbltse184773@fpt.edu.vn";
-    private final String PASSWORD = "zqdi uyus kkqi qtvl";
+    private final String PASSWORD = "fake code";
     private final String WELCOME = "Welcome to stbcStore";
     private final String WELCOMEMESSAGE
             = "Welcome to stbcStore!\n"
