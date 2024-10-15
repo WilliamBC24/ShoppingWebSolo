@@ -25,7 +25,7 @@ jobs:
       - name: Use existing WAR file
         run: |
           # Assuming the WAR file is in the 'dist' directory in your repo
-          cp dist/myapp.war ${{ github.workspace }}/myapp.war
+          cp dist/myapp.war ${{ github.workspace }}/stbcStore.war
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
