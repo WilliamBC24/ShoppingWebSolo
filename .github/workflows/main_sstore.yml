@@ -22,14 +22,10 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Install Apache Ant
+      - name: Use existing WAR file
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ant
-          curl https://repo1.maven.org/maven2/org/netbeans/modules/org-netbeans-modules-java-j2seproject/RELEASE230/org-netbeans-modules-java-j2seproject-RELEASE230.jar > copylibs
-
-      - name: Build with Ant
-        run: ant -Dlibs.CopyLibs.classpath=copylibs
+          # Assuming the WAR file is in the 'dist' directory in your repo
+          cp dist/myapp.war ${{ github.workspace }}/myapp.war
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
