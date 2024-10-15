@@ -26,9 +26,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ant
+          curl https://repo1.maven.org/maven2/org/netbeans/modules/org-netbeans-modules-java-j2seproject/RELEASE230/org-netbeans-modules-java-j2seproject-RELEASE230.jar > copylibs
 
       - name: Build with Ant
-        run: ant clean jar
+        run: ant -Dlibs.CopyLibs.classpath=copylibs
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
