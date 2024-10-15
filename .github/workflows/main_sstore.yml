@@ -22,8 +22,13 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Install Apache Ant
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ant
+
+      - name: Build with Ant
+        run: ant clean jar
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
