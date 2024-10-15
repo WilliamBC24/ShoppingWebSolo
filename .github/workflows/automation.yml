@@ -1,0 +1,32 @@
+name:Automation
+
+concurrency:
+	group: ${{ github.workflow }}
+	cancel-in-progress: true
+
+on:
+	workflow-dispatch:
+	push:
+		branches:
+			- main
+
+jobs:
+	start-server:
+ 		runs-on: ubuntu-latest
+
+	steps:
+	-name: Repo checkout
+	 uses: actions/checkout@v2
+
+	-name: MySQL
+	 run: |
+		docker run --network host -d --name mysql \
+		 -e "MYSQL_ROOT_PASSWORD=sa" \
+		 mysql:latest
+		sleep 10
+		docker exec mysql_container mysql -uroot -psa -e \
+		"ALTER USER 'root'@'localhost' IDENTIFIED BY 'sa';"
+
+	-name: Create Database
+	run: |
+		
