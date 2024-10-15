@@ -61,5 +61,5 @@ jobs:
         with:
           app-name: 'sstore'
           slot-name: 'Production'
-          package: '*.jar'
+          package: 'dist/stbcStore.war'
           
